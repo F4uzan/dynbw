@@ -75,7 +75,7 @@ if [ $quick_build == "y" ]; then
 	export ARCH=$arc
 	export CROSS_COMPILE=$cc
 	make $defconfig
-	make -j$cores
+	make -j$core_count
 	exit
 fi
 
