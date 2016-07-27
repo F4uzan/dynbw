@@ -43,8 +43,6 @@ if [ $conf_generated == false ]; then
 	echo "Advanced Settings"
 	echo "-----------------"
 	read -p "Quick build [y/N]? " quick_build
-	read -p "Symlink defconfig [y/N]? " def_link
-	read -p "Symlink compiler path [y/N]? " cc_link
 	read -p "Multiply cores count [y/N]? " thread_num
 	echo
 	echo
@@ -53,9 +51,6 @@ if [ $conf_generated == false ]; then
 	echo $cc > $conf/cc
 	echo $defconfig > $conf/defconfig
 	echo hasconfig > $hasconf
-# def_link and cc_link is not yet enabled
-	echo $def_link > $conf/def_link
-	echo $cc_link > $conf/cc_link
 	echo $quick_build > $conf/quick_build
 	echo $thread_num > $conf/thread_num
 	echo $clean > $conf/clean
