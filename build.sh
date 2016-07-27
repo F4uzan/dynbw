@@ -61,6 +61,13 @@ if [ $conf_generated == false ]; then
 	echo $clean > $conf/clean
 fi
 
+# Multiply core count if "thread_num" is enabled
+if [ $thread_num == "y" ]; then
+	core_count=$(($cores*2))
+else
+	core_count=$cores
+fi
+
 # Clean kerneldir if "clean" is enabled
 if [ $clean == "y" ]; then
 	export ARCH=$arc
@@ -86,8 +93,8 @@ echo "2.) Clean"
 echo "3.) Exit"
 read -p "Selection: " menu
 case "$menu" in
-1 ) export ARCH=$arc ; export CROSS_COMPILE=$cc; make $defconfig; make -j$cores ;;
-2 ) export ARCH=$arc ; export CROSS_COMPILE=$cc; make $defconfig; make mrproper; make -j$cores ;;
+1 ) export ARCH=$arc ; export CROSS_COMPILE=$cc; make $defconfig; make -j$core_count ;;
+2 ) export ARCH=$arc ; export CROSS_COMPILE=$cc; make $defconfig; make mrproper; make -j$core_count ;;
 3 ) exit ;;
 * ) echo "Invalid choice"; sleep 2; $0 ;;
 esac
