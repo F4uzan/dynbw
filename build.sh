@@ -13,7 +13,6 @@ thread_num=$(cat $conf/thread_num)>nul
 quick_build=$(cat $conf/quick_build)>nul
 clean=$(cat $conf/clean)>nul
 cores=`cat /proc/cpuinfo | grep "^processor" | wc -l` "$@"
-conf_generated=false
 
 # Detect whether configuration exists
 if [ -e $hasconf ]; then
