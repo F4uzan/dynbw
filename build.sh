@@ -1,5 +1,6 @@
 #!/bin/sh
-# Dynamic Builder Wrapper (DynBW), version 0.1
+# Dynamic Builder Wrapper (DynBW), version 0.2
+# Handmade by F4uzan, with parts picked up from the internet
 # Licensed under GPLv3
 
 # Initialize variables
