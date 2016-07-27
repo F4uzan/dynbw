@@ -3,7 +3,6 @@
 # Licensed under GPLv3
 
 # Initialize variables
-dir="${BASH_SOURCE:-$0}";
 conf=dynbw/conf
 hasconf=dynbw/hasconf
 this_arch=$(cat $conf/arch)>nul
