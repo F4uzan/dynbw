@@ -74,7 +74,7 @@ if [ $quick_build == "y" ]; then
 	exit
 fi
 
-# Menu, user selects options here
+# Menu, user selects an option here
 clear
 echo "// Dynamic Builder Wrapper"
 echo "--------------------------"
@@ -86,5 +86,5 @@ case "$menu" in
 1 ) export ARCH=$this_arch ; export CROSS_COMPILE=$cc; make $defconfig; make -j$core_count ;;
 2 ) export ARCH=$this_arch ; export CROSS_COMPILE=$cc; make $defconfig; make mrproper; make -j$core_count ;;
 3 ) exit ;;
-* ) echo "Invalid choice"; sleep 2; $0 ;;
+* ) echo "Invalid choice" ; sleep 2 ; $0 ;;
 esac
