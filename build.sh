@@ -46,7 +46,7 @@ if [ $conf_generated == false ]; then
 	echo
 	echo
 	echo "Saving configuration.."
-	echo $this_arch  > $conf/this_arch
+	echo $this_arch  > $conf/arch
 	echo $cc > $conf/cc
 	echo $defconfig > $conf/defconfig
 	echo hasconfig > $hasconf
