@@ -62,7 +62,7 @@ fi
 if [ $clean == "y" ]; then
 	export ARCH=$this_arch
 	make $defconfig
-	make clean
+	make mrproper
 fi
 
 # Skip menu and just build Quick Build is enabled
