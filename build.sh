@@ -6,7 +6,7 @@
 dir="${BASH_SOURCE:-$0}";
 conf=dynbw/conf
 hasconf=dynbw/hasconf
-arc=$(cat $conf/arc)>nul
+this_arch=$(cat $conf/arch)>nul
 cc=$(cat $conf/cc)>nul
 defconfig=$(cat $conf/defconfig)>nul
 thread_num=$(cat $conf/thread_num)>nul
@@ -21,9 +21,8 @@ if [ -e $hasconf ]; then
 	conf_generated=true
 else
 	echo "No configs found"
-	mkdir dynbw
-	mkdir dynbw/conf
 	conf_generated=false
+	mkdir dynbw && mkdir dynbw/conf
 fi
 
 # Create configuration if it doesn't exists
@@ -35,7 +34,7 @@ if [ $conf_generated == false ]; then
 	echo
 	echo "Basic Settings"
 	echo "--------------"
-	read -p "Default architecture: " arc
+	read -p "Default architecture: " this_arch
 	read -p "Cross Compiler path : " cc
 	read -p "Default defconfig   : " defconfig
 	read -p "Clean before build [Y/n]? " clean
@@ -47,7 +46,7 @@ if [ $conf_generated == false ]; then
 	echo
 	echo
 	echo "Saving configuration.."
-	echo $arc > $conf/arc
+	echo $this_arch  > $conf/this_arch
 	echo $cc > $conf/cc
 	echo $defconfig > $conf/defconfig
 	echo hasconfig > $hasconf
@@ -65,14 +64,14 @@ fi
 
 # Clean kerneldir if "clean" is enabled
 if [ $clean == "y" ]; then
-	export ARCH=$arc
+	export ARCH=$this_arch
 	make $defconfig
 	make clean
 fi
 
 # Skip menu and just build Quick Build is enabled
 if [ $quick_build == "y" ]; then
-	export ARCH=$arc
+	export ARCH=$this_arch
 	export CROSS_COMPILE=$cc
 	make $defconfig
 	make -j$core_count
@@ -88,8 +87,8 @@ echo "2.) Clean"
 echo "3.) Exit"
 read -p "Selection: " menu
 case "$menu" in
-1 ) export ARCH=$arc ; export CROSS_COMPILE=$cc; make $defconfig; make -j$core_count ;;
-2 ) export ARCH=$arc ; export CROSS_COMPILE=$cc; make $defconfig; make mrproper; make -j$core_count ;;
+1 ) export ARCH=$this_arch ; export CROSS_COMPILE=$cc; make $defconfig; make -j$core_count ;;
+2 ) export ARCH=$this_arch ; export CROSS_COMPILE=$cc; make $defconfig; make mrproper; make -j$core_count ;;
 3 ) exit ;;
 * ) echo "Invalid choice"; sleep 2; $0 ;;
 esac
