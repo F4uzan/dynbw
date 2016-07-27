@@ -26,9 +26,7 @@ fi
 
 # Create configuration if it doesn't exists
 if [ $conf_generated == false ]; then
-	echo "// Dynamic Builder Wrapper"
-	echo "--------------------------"
-	echo
+	clear
 	echo "Setting up DynBW.."
 	echo
 	echo "Basic Settings"
@@ -43,12 +41,11 @@ if [ $conf_generated == false ]; then
 	read -p "Quick build [y/N]? " quick_build
 	read -p "Multiply cores count [y/N]? " thread_num
 	echo
-	echo
 	echo "Saving configuration.."
 	echo $this_arch  > $conf/arch
 	echo $cc > $conf/cc
 	echo $defconfig > $conf/defconfig
-	echo hasconfig > $hasconf
+	echo true > $hasconf
 	echo $quick_build > $conf/quick_build
 	echo $thread_num > $conf/thread_num
 	echo $clean > $conf/clean
