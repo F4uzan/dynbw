@@ -62,7 +62,7 @@ fi
 if [ $clean == "y" ]; then
 	export ARCH=$this_arch
 	make $defconfig
-	make mrproper
+	make clean && make mrproper
 fi
 
 # Skip menu and just build Quick Build is enabled
@@ -79,12 +79,14 @@ clear
 echo "// Dynamic Builder Wrapper"
 echo "--------------------------"
 echo "1.) Direct build"
-echo "2.) Clean"
-echo "3.) Exit"
+echo "2.) Clean then build"
+echo "3 ) Clean"
+echo "0.) Exit"
 read -p "Selection: " menu
 case "$menu" in
 1 ) export ARCH=$this_arch ; export CROSS_COMPILE=$cc; make $defconfig; make -j$core_count ;;
 2 ) export ARCH=$this_arch ; export CROSS_COMPILE=$cc; make $defconfig; make mrproper; make -j$core_count ;;
-3 ) exit ;;
+3 ) export ARCH=$this_arch ; make $defconfig; make mrproper ;;
+0 ) exit ;;
 * ) echo "Invalid choice" ; sleep 2 ; $0 ;;
 esac
