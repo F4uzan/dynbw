@@ -72,6 +72,7 @@ if [ $conf_generated == false ]; then
 		echo $defconfig_two_default > $conf/defconfig_two_default
 	fi
 	echo true > $hasconf
+	echo $validver > $hasver
 	echo $quick_build > $conf/quick_build
 	echo $thread_num > $conf/thread_num
 	echo $clean > $conf/clean
