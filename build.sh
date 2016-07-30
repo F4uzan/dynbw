@@ -1,5 +1,5 @@
 #!/bin/bash
-# Dynamic Builder Wrapper (DynBW), version 0.2
+# Dynamic Builder Wrapper (DynBW), version PRE-0.3
 # Handmade by F4uzan, with parts picked up from the internet
 # Licensed under GPLv3
 
@@ -10,6 +10,7 @@ hasver=dynbw/confver
 validver=1
 
 # Define configuration version
+# If there is no file named confver, assume the user used old DynBW before
 if [ -e $hasver ]; then
 	confver=$($cat $hasver)>nul
 else
@@ -101,13 +102,15 @@ else
 fi
 
 # Clean kerneldir if "clean" is enabled
+# Don't do anything if multi_defconfig is enabled
 if [ $clean == "y" ] && [ $multi_defconfig == "N" ]; then
 	export ARCH=$this_arch
 	make $defconfig
 	make clean && make mrproper
 fi
 
-# Skip menu and just build Quick Build is enabled
+# Skip menu and just build if Quick Build is enabled
+# Make sure that multi_defconfig isn't enabled, if it's enabled then don't do anything
 if [ $quick_build == "y" ] && [ $multi_defconfig == "N" ]; then
 	export ARCH=$this_arch
 	export CROSS_COMPILE=$cc
@@ -123,7 +126,7 @@ if [ $multi_defconfig == "N" ]; then
 	echo "--------------------------"
 	echo "1.) Direct build"
 	echo "2.) Clean then build"
-	echo "3 ) Clean"
+	echo "3.) Clean"
 	echo "0.) Exit"
 	read -p "Selection: " menu
 	case "$menu" in
@@ -147,9 +150,9 @@ else
 	echo "Current defconfig : $curr_defconfig"
 	echo "1.) Direct build"
 	echo "2.) Clean then build"
-	echo "3 ) Clean"
+	echo "3.) Clean"
 	echo "0.) Exit"
-	echo "9 ) Switch to $switch_defconfig then build"
+	echo "9.) Switch to $switch_defconfig then build"
 	read -p "Selection: " menu
 	case "$menu" in
 	1 ) export ARCH=$this_arch ; export CROSS_COMPILE=$cc; make $curr_defconfig; make -j$core_count ;;
