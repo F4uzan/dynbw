@@ -3,7 +3,7 @@
 # Handmade by F4uzan, with parts picked up from the internet
 # Licensed under GPLv3
 
-# Local configration folder
+# Local configuration folder
 conf=dynbw/conf
 hasconf=dynbw/hasconf
 hasver=dynbw/confver
