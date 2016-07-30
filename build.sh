@@ -9,6 +9,9 @@ hasconf=dynbw/hasconf
 this_arch=$(cat $conf/arch)>nul
 cc=$(cat $conf/cc)>nul
 defconfig=$(cat $conf/defconfig)>nul
+multi_defconfig=$(cat $conf/multi_defconfig)>nul
+defconfig_two=$(cat $conf/defconfig_two)>nul
+defconfig_two_default=$(cat $conf/defconfig_two_default)>nul
 thread_num=$(cat $conf/thread_num)>nul
 quick_build=$(cat $conf/quick_build)>nul
 clean=$(cat $conf/clean)>nul
@@ -39,12 +42,22 @@ if [ $conf_generated == false ]; then
 	echo "Advanced Settings"
 	echo "-----------------"
 	read -p "Quick build [y/N]? " quick_build
+	read -p "Handle two defconfig (disables quick build) [y/N]? " multi_defconfig
 	read -p "Multiply cores count [y/N]? " thread_num
+	if [ $multi_defconfig == "y" ]; then
+		echo "Set second defconfig as default [y/N]? " defconfig_two_default
+		read -p "Second defconfig : " defconfig_two
+	fi
 	echo
 	echo "Saving configuration.."
 	echo $this_arch  > $conf/arch
 	echo $cc > $conf/cc
 	echo $defconfig > $conf/defconfig
+	echo $multi_defconfig > $conf/multi_defconfig
+	if [ $multi_defconfig == "y" ]; then
+		echo $defconfig_two > $conf/defconfig_two
+		echo $defconfig_two_default > $conf/defconfig_two_default
+	fi
 	echo true > $hasconf
 	echo $quick_build > $conf/quick_build
 	echo $thread_num > $conf/thread_num
@@ -59,14 +72,14 @@ else
 fi
 
 # Clean kerneldir if "clean" is enabled
-if [ $clean == "y" ]; then
+if [ $clean == "y" ] && [ $multi_defconfig == "N" ]; then
 	export ARCH=$this_arch
 	make $defconfig
 	make clean && make mrproper
 fi
 
 # Skip menu and just build Quick Build is enabled
-if [ $quick_build == "y" ]; then
+if [ $quick_build == "y" ] && [ $multi_defconfig == "N" ]; then
 	export ARCH=$this_arch
 	export CROSS_COMPILE=$cc
 	make $defconfig
@@ -75,18 +88,46 @@ if [ $quick_build == "y" ]; then
 fi
 
 # Menu, user selects an option here
-clear
-echo "// Dynamic Builder Wrapper"
-echo "--------------------------"
-echo "1.) Direct build"
-echo "2.) Clean then build"
-echo "3 ) Clean"
-echo "0.) Exit"
-read -p "Selection: " menu
-case "$menu" in
-1 ) export ARCH=$this_arch ; export CROSS_COMPILE=$cc; make $defconfig; make -j$core_count ;;
-2 ) export ARCH=$this_arch ; export CROSS_COMPILE=$cc; make $defconfig; make clean; make mrproper; make -j$core_count ;;
-3 ) export ARCH=$this_arch ; make $defconfig; make mrproper ;;
-0 ) exit ;;
-* ) echo "Invalid choice" ; sleep 2 ; $0 ;;
-esac
+if [ $multi_defconfig == "N" ]; then
+	clear
+	echo "// Dynamic Builder Wrapper"
+	echo "--------------------------"
+	echo "1.) Direct build"
+	echo "2.) Clean then build"
+	echo "3 ) Clean"
+	echo "0.) Exit"
+	read -p "Selection: " menu
+	case "$menu" in
+	1 ) export ARCH=$this_arch ; export CROSS_COMPILE=$cc; make $defconfig; make -j$core_count ;;
+	2 ) export ARCH=$this_arch ; export CROSS_COMPILE=$cc; make $defconfig; make clean; make mrproper; make -j$core_count ;;
+	3 ) export ARCH=$this_arch ; make $defconfig; make mrproper ;;
+	0 ) exit ;;
+	* ) echo "Invalid choice" ; sleep 2 ; $0 ;;
+	esac
+else
+	clear
+	if [ $defconfig_two_default == "y" ]; then
+		curr_defconfig=$defconfig_two
+		switch_defconfig=$defconfig
+	else
+		curr_defconfig=$defconfig
+		switch_defconfig=$defconfig_two
+	fi
+	echo "// Dynamic Builder Wrapper"
+	echo "--------------------------"
+	echo "Current defconfig : $curr_defconfig"
+	echo "1.) Direct build"
+	echo "2.) Clean then build"
+	echo "3 ) Clean"
+	echo "0.) Exit"
+	echo "9 ) Switch to $switch_defconfig then build"
+	read -p "Selection: " menu
+	case "$menu" in
+	1 ) export ARCH=$this_arch ; export CROSS_COMPILE=$cc; make $curr_defconfig; make -j$core_count ;;
+	2 ) export ARCH=$this_arch ; export CROSS_COMPILE=$cc; make $curr_defconfig; make clean; make mrproper; make -j$core_count ;;
+	3 ) export ARCH=$this_arch ; make $defconfig; make mrproper ;;
+	0 ) exit ;;
+	9 ) export ARCH=$this_arch ; export CROSS_COMPILE=$cc; make $switch_defconfig; make -j$core_count ;;
+	* ) echo "Invalid choice" ; sleep 2 ; $0 ;;
+	esac
+fi
