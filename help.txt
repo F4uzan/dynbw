@@ -1,0 +1,29 @@
+# DynBW Help File
+#
+# This is a quick help that'll guide you to the basics of DynBW
+
+# 1.) Before Using
+- Make sure you have a proper kernel source
+- Also, don't forget a cross compiler inteded for your phone's architecture
+- And make sure your computer runs on Linux with 64 bit OS/kernel and 64 bit CPU
+
+# 2.) How to Use
+- Launch install.sh in a Terminal Emulator window
+	Use: ./install.sh
+- The installation will prompt you to paste a full path to a folder
+	Example: /home/user/Kernel/my_awesome_kernel
+- Once the installation is done, go to the folder path and open a Terminal Emulator window
+- Launch dynbw.sh
+	Use: ./dynbw.sh
+- DynBW will set up the common configurations
+	Architecture is your phone CPU architecture (arm, armv8, x86, x86_64)
+	Cross Compile path should follow this format : /home/user/folder-to-toolchain (DO NOT ADD ANYTHING ELSE)
+	Defconfig is the default defconfig you would use (this loads device-specific configuration for your kernel)
+- There will be some advanced settings, some of them are pretty self explanatory
+	Quick Build : Skips menu, so you will not have any menu interface, just a straight build and done
+	Multiply cores count : This'll multiply the number of cores for building by 2 (if you have 2 cores, you'll use 4 threads for building)
+- Depending on your choice, you'll either enter Quick Build (where your kernel are built), or sent to the menu
+
+# 3.) Need more help?
+
+I'm working on a better help system, you can contribute and help me here, it'll be greatly appreciated!
