@@ -10,8 +10,10 @@ this_arch=$(cat $conf/arch)>nul
 cc=$(cat $conf/cc)>nul
 defconfig=$(cat $conf/defconfig)>nul
 multi_defconfig=$(cat $conf/multi_defconfig)>nul
-defconfig_two=$(cat $conf/defconfig_two)>nul
-defconfig_two_default=$(cat $conf/defconfig_two_default)>nul
+if [ $multi_defconfig == "y" ]; then
+	defconfig_two=$(cat $conf/defconfig_two)>nul
+	defconfig_two_default=$(cat $conf/defconfig_two_default)>nul
+fi
 thread_num=$(cat $conf/thread_num)>nul
 quick_build=$(cat $conf/quick_build)>nul
 clean=$(cat $conf/clean)>nul
