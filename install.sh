@@ -8,6 +8,7 @@ if [ -e $install_to/build.sh ]; then
 	echo "Please delete or move the file to continue installation"
 	exit
 else
-	ln -s $PWD/build.sh $install_to
+	ln -s $PWD/build.sh $install_to/build.sh
 	echo "Installation complete! Launch build.sh in $install_to to use DynBW"
+	exit
 fi
