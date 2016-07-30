@@ -8,3 +8,9 @@ Compatibility:
 - Probably other shell types (SH, ZSH, et cetera), but it is untested
 
 You also need a properly working kernel source and a cross compiler, but if you have compiled a kernel before, you probably know the gist already.
+
+How to use :
+- Use the install.sh to symlink dynbw.sh to the root of your kernel directory
+- Launch dynbw.sh in the install path previously used in install.sh
+- Finish up the first-start configuration
+- Relaunch dynbw.sh to compile your kernel
