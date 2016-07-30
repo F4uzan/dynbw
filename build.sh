@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Dynamic Builder Wrapper (DynBW), version 0.2
 # Handmade by F4uzan, with parts picked up from the internet
 # Licensed under GPLv3
