@@ -3,9 +3,20 @@
 # Handmade by F4uzan, with parts picked up from the internet
 # Licensed under GPLv3
 
-# Initialize variables
+# Local configration folder
 conf=dynbw/conf
 hasconf=dynbw/hasconf
+hasver=dynbw/confver
+validver=1
+
+# Define configuration version
+if [ -e $hasver ]; then
+	confver=$($cat $hasver)>nul
+else
+	confver=0
+fi
+
+# Initialize variables
 this_arch=$(cat $conf/arch)>nul
 cc=$(cat $conf/cc)>nul
 defconfig=$(cat $conf/defconfig)>nul
@@ -64,6 +75,21 @@ if [ $conf_generated == false ]; then
 	echo $quick_build > $conf/quick_build
 	echo $thread_num > $conf/thread_num
 	echo $clean > $conf/clean
+fi
+
+# Handle older configuration version
+if [ $confver == "0" ]; then
+	echo $validver > $hasver
+	read -p "Handle two defconfig (disables quick build) [y/N]? " multi_defconfig
+	if [ $multi_defconfig == "y" ]; then
+		echo "Set second defconfig as default [y/N]? " defconfig_two_default
+		read -p "Second defconfig : " defconfig_two
+	fi
+	echo $multi_defconfig > $conf/multi_defconfig
+	if [ $multi_defconfig == "y" ]; then
+		echo $defconfig_two > $conf/defconfig_two
+		echo $defconfig_two_default > $conf/defconfig_two_default
+	fi
 fi
 
 # Multiply core count if "thread_num" is enabled
