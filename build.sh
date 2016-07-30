@@ -85,7 +85,7 @@ echo "0.) Exit"
 read -p "Selection: " menu
 case "$menu" in
 1 ) export ARCH=$this_arch ; export CROSS_COMPILE=$cc; make $defconfig; make -j$core_count ;;
-2 ) export ARCH=$this_arch ; export CROSS_COMPILE=$cc; make $defconfig; make mrproper; make -j$core_count ;;
+2 ) export ARCH=$this_arch ; export CROSS_COMPILE=$cc; make $defconfig; make clean; make mrproper; make -j$core_count ;;
 3 ) export ARCH=$this_arch ; make $defconfig; make mrproper ;;
 0 ) exit ;;
 * ) echo "Invalid choice" ; sleep 2 ; $0 ;;
