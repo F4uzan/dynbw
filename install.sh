@@ -5,7 +5,7 @@
 read -p "Folder to install DynBW to: " install_to
 if [ -e $install_to/build.sh ]; then
 	echo "build.sh already exists in installation directory!"
-	echo "Please delete or move the file to continue installation
+	echo "Please delete or move the file to continue installation"
 	exit
 else
 	ln -s $PWD/build.sh $install_to
