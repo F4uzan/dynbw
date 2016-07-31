@@ -81,7 +81,7 @@ fi
 
 # Handle older configuration version
 if [ $confver == "0" ]; then
-	echo $validver > $hasver
+	echo 1 > $hasver
 	read -p "Handle two defconfig (disables quick build) [y/N]? " multi_defconfig
 	if [ $multi_defconfig == "y" ]; then
 		echo "Set second defconfig as default [y/N]? " defconfig_two_default
