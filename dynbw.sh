@@ -74,6 +74,7 @@ if [ $conf_generated == false ]; then
 	fi
 	echo true > $hasconf
 	echo $validver > $hasver
+	confver=$validver
 	echo $quick_build > $conf/quick_build
 	echo $thread_num > $conf/thread_num
 	echo $clean > $conf/clean
