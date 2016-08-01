@@ -96,7 +96,9 @@ if [ $confver == "0" ]; then
 fi
 if [ $confver == "1" ]; then
 	echo 2 > $hasver
-	mv $conf/arc $conf/arch
+	if [ -e $conf/arc ]; then
+		mv $conf/arc $conf/arch
+	fi
 fi
 
 # Multiply core count if "thread_num" is enabled
