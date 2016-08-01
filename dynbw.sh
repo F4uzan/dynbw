@@ -59,7 +59,7 @@ if [ $conf_generated == false ]; then
 	read -p "Handle two defconfig (disables quick build) [y/N]? " multi_defconfig
 	read -p "Multiply cores count [y/N]? " thread_num
 	if [ $multi_defconfig == "y" ]; then
-		echo "Set second defconfig as default [y/N]? " defconfig_two_default
+		read -p "Set second defconfig as default [y/N]? " defconfig_two_default
 		read -p "Second defconfig : " defconfig_two
 	fi
 	echo
