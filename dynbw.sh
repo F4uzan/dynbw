@@ -83,9 +83,11 @@ fi
 # Handle older configuration version
 if [ $confver == "0" ]; then
 	echo 1 > $hasver
+	echo "Updating configuration to version 1..."
+	sleep 1
 	read -p "Handle two defconfig (disables quick build) [y/N]? " multi_defconfig
 	if [ $multi_defconfig == "y" ]; then
-		echo "Set second defconfig as default [y/N]? " defconfig_two_default
+		read -p "Set second defconfig as default [y/N]? " defconfig_two_default
 		read -p "Second defconfig : " defconfig_two
 	fi
 	echo $multi_defconfig > $conf/multi_defconfig
@@ -97,6 +99,8 @@ if [ $confver == "0" ]; then
 fi
 if [ $confver == "1" ]; then
 	echo 2 > $hasver
+	echo "Updating configuration to version 2..."
+	sleep 1
 	if [ -e $conf/arc ]; then
 		mv $conf/arc $conf/arch
 	fi
@@ -160,7 +164,7 @@ else
 	echo "1.) Direct build"
 	echo "2.) Clean then build"
 	echo "3.) Clean"
-	echo "0.) Exit"
+	echo "0.) Exit"b
 	echo "9.) Switch to $switch_defconfig then build"
 	read -p "Selection: " menu
 	case "$menu" in
