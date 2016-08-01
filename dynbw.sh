@@ -7,7 +7,7 @@
 conf=dynbw/conf
 hasconf=dynbw/hasconf
 hasver=dynbw/confver
-validver=1
+validver=2
 
 # Define configuration version
 # If there is no file named confver, assume the user used old DynBW before
@@ -93,6 +93,10 @@ if [ $confver == "0" ]; then
 		echo $defconfig_two > $conf/defconfig_two
 		echo $defconfig_two_default > $conf/defconfig_two_default
 	fi
+fi
+if [ $confver == "1" ]; then
+	echo 2 > $hasver
+	mv $conf/arc $conf/arch
 fi
 
 # Multiply core count if "thread_num" is enabled
