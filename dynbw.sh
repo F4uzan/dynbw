@@ -12,7 +12,7 @@ validver=1
 # Define configuration version
 # If there is no file named confver, assume the user used old DynBW before
 if [ -e $hasver ]; then
-	confver=$($cat $hasver)>nul
+	confver=$(cat $hasver)>nul
 else
 	confver=0
 fi
