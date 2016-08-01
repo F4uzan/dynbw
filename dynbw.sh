@@ -93,12 +93,14 @@ if [ $confver == "0" ]; then
 		echo $defconfig_two > $conf/defconfig_two
 		echo $defconfig_two_default > $conf/defconfig_two_default
 	fi
+	confver=1
 fi
 if [ $confver == "1" ]; then
 	echo 2 > $hasver
 	if [ -e $conf/arc ]; then
 		mv $conf/arc $conf/arch
 	fi
+	confver=2
 fi
 
 # Multiply core count if "thread_num" is enabled
