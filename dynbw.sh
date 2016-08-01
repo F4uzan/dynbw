@@ -164,7 +164,7 @@ else
 	echo "1.) Direct build"
 	echo "2.) Clean then build"
 	echo "3.) Clean"
-	echo "0.) Exit"b
+	echo "0.) Exit"
 	echo "9.) Switch to $switch_defconfig then build"
 	read -p "Selection: " menu
 	case "$menu" in
