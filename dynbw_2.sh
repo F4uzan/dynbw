@@ -119,6 +119,7 @@ init() {
 # Reconfigure the configuration file
 # Does not initialise configuration, use init instead
 reconfig() {
+	import_var
 	if [ ! -f "$conf_file" ]; then
 		echo "/!\ Configuration file not found, exiting..."
 		return
