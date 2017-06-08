@@ -108,7 +108,7 @@ build() {
 config() {
 	arg="$1"
 	case "$arg" in
-	init)
+	--init|-i)
 		import_var
 		if [ -f "$conf_file" ]; then
 			echo "/!\ Existing configuration file found, exiting..."
@@ -143,7 +143,7 @@ config() {
 		echo
 		echo "Configuration done!"
 		;;
-	reconfig)
+	--reconfig|-r)
 		import_var
 		if [ ! -f "$conf_file" ]; then
 			echo "/!\ Configuration file not found, exiting..."
