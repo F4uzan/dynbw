@@ -12,29 +12,33 @@ dynbw_version=1.0
 
 # Internal function: Imports variable
 import_var() {
-	# Misc. configuration-related variables
+	arg="$1"
 	conf_file=".dynbw_config"
 
-	# Register variables based on the configuration
-	# Only register if the configuration exists
-	if [ -f "$conf_file" ]; then
-		cores="$(grep "cores=" "$conf_file" | cut -d"=" -f2 | sed -e "1{q}")"
-		toolchain_path="$(grep "toolchain_path=" "$conf_file" | cut -d"=" -f2 | sed -e "1{q}")"
-
-	else
-		echo "/i\ Configuration file not found"
-		echo "Run 'config init' to create configuration file"
-	fi
-
-	# Try and find ccache
-	# If ccache exists, prompts the user
-	if command -v ccache 2>/dev/null; then
-		echo "/i\ Valid ccache installation found"
-		hasccache=true
-	else
-		echo "/i\ No valid ccache installation found"
-		hasccache=false
-	fi
+	case "$arg" in
+	conf_init)
+		# Register variables based on the configuration
+		# Only register if the configuration exists
+		if [ -f "$conf_file" ]; then
+			cores="$(grep "cores=" "$conf_file" | cut -d"=" -f2 | sed -e "1{q}")"
+			toolchain_path="$(grep "toolchain_path=" "$conf_file" | cut -d"=" -f2 | sed -e "1{q}")"
+		else
+			echo "/i\ Configuration file not found"
+			echo "Run 'config init' to create configuration file"
+		fi
+	;;
+	ccache_init)
+		# Try and find ccache
+		# If ccache exists, prompts the user
+		if command -v ccache 2>/dev/null; then
+			echo "/i\ Valid ccache installation found"
+			hasccache=true
+		else
+			echo "/i\ No valid ccache installation found"
+			hasccache=false
+		fi
+	;;
+	esac
 }
 
 # Builds kernel using configuration file
@@ -50,6 +54,8 @@ import_var() {
 # Example:
 # build generic_arm64_defconfig
 build() {
+	import_var conf_init
+	import_var ccache_init
 	flag="$1"
 	defconfig="$2"
 	export CROSS_COMPILE="$toolchain_path"
@@ -115,7 +121,7 @@ config() {
 	arg="$1"
 	case "$arg" in
 	--init|-i)
-		import_var
+		import_var conf_init
 		if [ -f "$conf_file" ]; then
 			echo "/!\ Existing configuration file found, exiting..."
 			return
@@ -150,7 +156,7 @@ config() {
 		echo "Configuration done!"
 		;;
 	--reconfig|-r)
-		import_var
+		import_var conf_init
 		if [ ! -f "$conf_file" ]; then
 			echo "/!\ Configuration file not found, exiting..."
 			return
