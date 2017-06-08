@@ -11,7 +11,7 @@
 # Internal function: Imports variable
 import_var() {
 	# Misc. configuration-related variables
-	conf_file=.dynbw_config
+	conf_file=".dynbw_config"
 
 	# Register variables based on the configuration
 	# Only register if the configuration exists
@@ -87,22 +87,22 @@ init() {
 		return
 	fi
 	echo "Initialising configuration..."
-	touch .dynbw_config
+	touch "$conf_file"
 	printf "Automatically detect CPU cores count for build system [Y/n]? "
 	read -r a_cores
 	if [ "$a_cores" = "y" ]; then
-		printf "cores=auto\n" >> .dynbw_config
+		printf "cores=auto\n" >> "$conf_file"
 	else
 		echo
 		printf "How many CPU cores should the build system use? "
 		read -r p_cores
 		case "$p_cores" in
 		    ''|*[!0-9]*) 
-			printf "cores=%s\n" "$p_cores" >> .dynbw_config
+			printf "cores=%s\n" "$p_cores" >> "$conf_file"
 			;;
 		    *)
 			echo "/!\ Invalid input detected, using automated cores detection instead"
-			printf "cores=auto\n" >> .dynbw_config
+			printf "cores=auto\n" >> "$conf_file"
 			;;
 		esac
 	fi
@@ -111,7 +111,7 @@ init() {
 	echo "Do not forget to include the hyphen at the end of the path!"
 	printf "Toolchain path: "
 	read -r toolchain
-	printf "toolchain_path=%s\n" "$toolchain" >> .dynbw_config
+	printf "toolchain_path=%s\n" "$toolchain" >> "$conf_file"
 	echo
 	echo "Configuration done!"
 }
@@ -140,14 +140,14 @@ reconfig() {
 		echo
 		printf "Change cores count to [auto][0-99]: "
 		read -r re_cores
-		sed -i -e "s/cores=$cores/cores=$re_cores/g" .dynbw_config
+		sed -i -e "s/cores=$cores/cores=$re_cores/g" "$conf_file"
 		echo "/i\ Cores count changed to $re_cores"
 		return
 	elif [ "$c_re" = "2" ]; then
 		echo
 		printf "New toolchain path: "
 		read -r re_toolchain
-		sed -i -e "s#toolchain_path=$toolchain_path#toolchain_path=$re_toolchain#g" .dynbw_config
+		sed -i -e "s#toolchain_path=$toolchain_path#toolchain_path=$re_toolchain#g" "$conf_file"
 		echo "/i\ Toolchain path changed to $re_toolchain"
 		return
 	else
