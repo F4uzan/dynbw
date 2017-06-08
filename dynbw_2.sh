@@ -8,6 +8,8 @@
 # "source dynbw.sh" (for BASH and other compatible Shells)
 # ". dynbw.sh" (compatible with all Shells)
 
+dynbw_version=1.0
+
 # Internal function: Imports variable
 import_var() {
 	# Misc. configuration-related variables
@@ -62,6 +64,8 @@ build() {
 		make mrproper
 		;;
 	--help|-h|"")
+		echo "DynBW v$dynbw_version"
+		echo
 		echo "Builds kernel using configuration file"
 		echo "Usage:"
 		echo "build <optional argument> <defconfig>"
@@ -181,6 +185,8 @@ config() {
 		fi
 		;;
 	--help|-h|*)
+		echo "DynBW v$dynbw_version"
+		echo
 		echo "Configuration-related function"
 		echo "Used to create or modify configuration"
 		echo
