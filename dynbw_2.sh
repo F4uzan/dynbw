@@ -163,5 +163,8 @@ config() {
 			return
 		fi
 		;;
+	*)
+		echo "/!\ $arg: Invalid input"
+		return
 	esac
 }
