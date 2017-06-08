@@ -90,7 +90,8 @@ build() {
 #
 config() {
 	arg="$1"
-	if [ "$arg" = "init" ]; then
+	case "$arg" in
+	init)
 		import_var
 		if [ -f "$conf_file" ]; then
 			echo "/!\ Existing configuration file found, exiting..."
@@ -124,7 +125,8 @@ config() {
 		printf "toolchain_path=%s\n" "$toolchain" >> "$conf_file"
 		echo
 		echo "Configuration done!"
-	elif [ "$arg" = "reconfig" ]; then
+		;;
+	reconfig)
 		import_var
 		if [ ! -f "$conf_file" ]; then
 			echo "/!\ Configuration file not found, exiting..."
@@ -160,5 +162,6 @@ config() {
 			echo "/!\ $c_re: Invalid input"
 			return
 		fi
-	fi
+		;;
+	esac
 }
