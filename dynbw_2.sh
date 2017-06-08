@@ -66,7 +66,8 @@ build() {
 	--help|-h|"")
 		echo "DynBW v$dynbw_version"
 		echo
-		echo "Builds kernel using configuration file"
+		echo "Executes build process"
+		echo
 		echo "Usage:"
 		echo "build <optional argument> <defconfig>"
 		echo
@@ -78,6 +79,7 @@ build() {
 		echo
 		echo "Example:"
 		echo "build generic_arm64_defconfig"
+		echo "build clean generic_arm64_defconfig"
 		return
 		;;
 	*) defconfig="$1" ;;
@@ -187,8 +189,7 @@ config() {
 	--help|-h|*)
 		echo "DynBW v$dynbw_version"
 		echo
-		echo "Configuration-related function"
-		echo "Used to create or modify configuration"
+		echo "Helper function to manage configuration file"
 		echo
 		echo "Usage:"
 		echo "config <argument>"
