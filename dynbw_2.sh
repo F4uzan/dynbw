@@ -50,18 +50,19 @@ build() {
 	flag="$1"
 	defconfig="$2"
 	export CROSS_COMPILE="$toolchain_path"
-	if [ "$flag" = "clean" ]; then
-		make clean
-	elif [ "$flag" = "mrproper" ]; then
-		make mrproper
-	elif [ "$flag" = "wipe" ]; then
+
+	case "$flag" in
+	clean) make clean ;;
+	mrproper) make mrproper ;;
+	wipe)
 		if [ "$hasccache" = "true" ]; then
 			ccache -c
 		fi
 		make mrproper
-	else
-		defconfig="$1"
-	fi
+		;;
+	*) defconfig="$1" ;;
+	esac
+
 	if [ -f "arch/arm/configs/$defconfig" ]; then
 		export ARCH=arm
 	elif [ -f "arch/arm64/configs/$defconfig" ]; then
