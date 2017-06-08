@@ -43,6 +43,7 @@ import_var() {
 # - clean: Do make clean before build
 # - mrproper: Do make mrproper before building
 # - wipe: Cleans kernel directory (mrproper) and ccache
+# - help: Shows help
 #
 # Example:
 # build generic_arm64_defconfig
@@ -52,13 +53,28 @@ build() {
 	export CROSS_COMPILE="$toolchain_path"
 
 	case "$flag" in
-	clean) make clean ;;
-	mrproper) make mrproper ;;
-	wipe)
+	--clean|-c) make clean ;;
+	--mrproper|-m) make mrproper ;;
+	--wipe|-w)
 		if [ "$hasccache" = "true" ]; then
 			ccache -c
 		fi
 		make mrproper
+		;;
+	--help|-h|"")
+		echo "Builds kernel using configuration file"
+		echo "Usage:"
+		echo "build <optional argument> <defconfig>"
+		echo
+		echo "Optional argument:"
+		echo "--clean: Do make clean before build"
+		echo "--mrproper: Do make mrproper before building"
+		echo "--wipe: Cleans kernel directory (mrproper) and ccache"
+		echo "--help: Display this help text"
+		echo
+		echo "Example:"
+		echo "build generic_arm64_defconfig"
+		return
 		;;
 	*) defconfig="$1" ;;
 	esac
