@@ -102,9 +102,9 @@ build() {
 # config <argument>
 #
 # Argument:
-# - init: Creates a configuration file
-# - reconfig: Modifies existing configuration file
-#
+# --init: Creates a configuration file
+# --reconfig: Modifies existing configuration file
+# --help: Shows help
 config() {
 	arg="$1"
 	case "$arg" in
@@ -180,8 +180,16 @@ config() {
 			return
 		fi
 		;;
-	*)
-		echo "/!\ $arg: Invalid input"
-		return
+	--help|-h|*)
+		echo "Configuration-related function"
+		echo "Used to create or modify configuration"
+		echo
+		echo "Usage:"
+		echo "config <argument>"
+		echo
+		echo "Argument:"
+		echo "--init: Creates a configuration file"
+		echo "--reconfig: Modifies existing configuration file"
+		echo "--help: Shows help"
 	esac
 }
