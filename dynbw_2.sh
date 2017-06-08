@@ -78,80 +78,87 @@ build() {
 	make "$defconfig" && make -j"$cores"
 }
 
-# Initialise configuration, use if configuration file is nonexistent
-# To modify configuration, use "config" instead
-init() {
-	import_var
-	if [ -f "$conf_file" ]; then
-		echo "/!\ Existing configuration file found, exiting..."
-		return
-	fi
-	echo "Initialising configuration..."
-	touch "$conf_file"
-	printf "Automatically detect CPU cores count for build system [Y/n]? "
-	read -r a_cores
-	if [ "$a_cores" = "y" ]; then
-		printf "cores=auto\n" >> "$conf_file"
-	else
-		echo
-		printf "How many CPU cores should the build system use? "
-		read -r p_cores
-		case "$p_cores" in
-		    ''|*[!0-9]*) 
-			printf "cores=%s\n" "$p_cores" >> "$conf_file"
-			;;
-		    *)
-			echo "/!\ Invalid input detected, using automated cores detection instead"
+# Configuration-related function
+# Used to create or modify configuration
+#
+# Usage:
+# config <argument>
+#
+# Argument:
+# - init: Creates a configuration file
+# - reconfig: Modifies existing configuration file
+#
+config() {
+	arg="$1"
+	if [ "$arg" = "init" ]; then
+		import_var
+		if [ -f "$conf_file" ]; then
+			echo "/!\ Existing configuration file found, exiting..."
+			return
+		fi
+		echo "Initialising configuration..."
+		touch "$conf_file"
+		printf "Automatically detect CPU cores count for build system [Y/n]? "
+		read -r a_cores
+		if [ "$a_cores" = "y" ]; then
 			printf "cores=auto\n" >> "$conf_file"
-			;;
+		else
+			echo
+			printf "How many CPU cores should the build system use? "
+			read -r p_cores
+			case "$p_cores" in
+			''|*[!0-9]*) 
+				printf "cores=%s\n" "$p_cores" >> "$conf_file"
+				;;
+			*)
+				echo "/!\ Invalid input detected, using automated cores detection instead"
+				printf "cores=auto\n" >> "$conf_file"
+				;;
 		esac
-	fi
-	echo
-	echo "Example toolchain path: /home/user/toolchain/bin/aarch64-linux-android-"
-	echo "Do not forget to include the hyphen at the end of the path!"
-	printf "Toolchain path: "
-	read -r toolchain
-	printf "toolchain_path=%s\n" "$toolchain" >> "$conf_file"
-	echo
-	echo "Configuration done!"
-}
-
-# Reconfigure the configuration file
-# Does not initialise configuration, use init instead
-reconfig() {
-	import_var
-	if [ ! -f "$conf_file" ]; then
-		echo "/!\ Configuration file not found, exiting..."
-		return
-	fi
-	if [ "$cores" = "auto" ]; then
-		cores_display="Automatic"
-	else
-		cores_display="$cores"
-	fi 
-	echo "List of available configuration"
-	echo
-	echo "1.) Cores count   : $cores_display"
-	echo "2.) Toolchain path: $toolchain_path"
-	echo
-	printf "Configuration to modify [1-2]: "
-	read -r c_re
-	if [ "$c_re" = "1" ]; then
+		fi
 		echo
-		printf "Change cores count to [auto][0-99]: "
-		read -r re_cores
-		sed -i -e "s/cores=$cores/cores=$re_cores/g" "$conf_file"
-		echo "/i\ Cores count changed to $re_cores"
-		return
-	elif [ "$c_re" = "2" ]; then
+		echo "Example toolchain path: /home/user/toolchain/bin/aarch64-linux-android-"
+		echo "Do not forget to include the hyphen at the end of the path!"
+		printf "Toolchain path: "
+		read -r toolchain
+		printf "toolchain_path=%s\n" "$toolchain" >> "$conf_file"
 		echo
-		printf "New toolchain path: "
-		read -r re_toolchain
-		sed -i -e "s#toolchain_path=$toolchain_path#toolchain_path=$re_toolchain#g" "$conf_file"
-		echo "/i\ Toolchain path changed to $re_toolchain"
-		return
-	else
-		echo "/!\ $c_re: Invalid input"
-		return
+		echo "Configuration done!"
+	elif [ "$arg" = "reconfig" ]; then
+		import_var
+		if [ ! -f "$conf_file" ]; then
+			echo "/!\ Configuration file not found, exiting..."
+			return
+		fi
+		if [ "$cores" = "auto" ]; then
+			cores_display="Automatic"
+		else
+			cores_display="$cores"
+		fi 
+		echo "List of available configuration"
+		echo
+		echo "1.) Cores count   : $cores_display"
+		echo "2.) Toolchain path: $toolchain_path"
+		echo
+		printf "Configuration to modify [1-2]: "
+		read -r c_re
+		if [ "$c_re" = "1" ]; then
+			echo
+			printf "Change cores count to [auto][0-99]: "
+			read -r re_cores
+			sed -i -e "s/cores=$cores/cores=$re_cores/g" "$conf_file"
+			echo "/i\ Cores count changed to $re_cores"
+			return
+		elif [ "$c_re" = "2" ]; then
+			echo
+			printf "New toolchain path: "
+			read -r re_toolchain
+			sed -i -e "s#toolchain_path=$toolchain_path#toolchain_path=$re_toolchain#g" "$conf_file"
+			echo "/i\ Toolchain path changed to $re_toolchain"
+			return
+		else
+			echo "/!\ $c_re: Invalid input"
+			return
+		fi
 	fi
 }
