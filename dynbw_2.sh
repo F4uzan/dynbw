@@ -23,7 +23,7 @@ import_var() {
 
 	else
 		echo "/i\ Configuration file not found"
-		echo "Run 'init' to create configuration file"
+		echo "Run 'config init' to create configuration file"
 	fi
 
 	# Try and find ccache
