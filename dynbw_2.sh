@@ -106,13 +106,14 @@ config() {
 			echo
 			printf "How many CPU cores should the build system use? "
 			read -r p_cores
-			echo "$p_cores"
-			if expr "$p_cores" : '[0-9][0-9]*$'>/dev/null; then
-				printf "cores=%s\n" "$p_cores" >> "$conf_file"
-			else
+			case "$p_cores" in
+			''|*[!0-9]*) 
 				echo "/!\ Invalid input detected, using automated cores detection instead"
 				printf "cores=auto\n" >> "$conf_file"
-			fi
+				;;
+			*)
+				printf "cores=%s\n" "$p_cores" >> "$conf_file"
+				;;
 		esac
 		fi
 		echo
