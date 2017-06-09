@@ -21,7 +21,10 @@ import_var() {
 		# Only register if the configuration exists
 		if [ -f "$conf_file" ]; then
 			cores="$(grep "cores=" "$conf_file" | cut -d"=" -f2 | sed -e "1{q}")"
-			toolchain_path="$(grep "toolchain_path=" "$conf_file" | cut -d"=" -f2 | sed -e "1{q}")"
+			toolchain_arm="$(grep "toolchain_arm=" "$conf_file" | cut -d"=" -f2 | sed -e "1{q}")"
+			toolchain_arm64="$(grep "toolchain_arm64=" "$conf_file" | cut -d"=" -f2 | sed -e "1{q}")"
+			toolchain_i686="$(grep "toolchain_i686=" "$conf_file" | cut -d"=" -f2 | sed -e "1{q}")"
+			toolchain_x86_64="$(grep "toolchain_x86_64=" "$conf_file" | cut -d"=" -f2 | sed -e "1{q}")"
 		else
 			echo "/i\ Configuration file not found"
 			echo "Run 'config init' to create configuration file"
@@ -100,6 +103,31 @@ build() {
 	else
 		echo "/!\ $defconfig: Defconfig not found, exiting.."
 		return
+	fi
+	if [ "$ARCH" = "arm" ]; then
+		if [ "$toolchain_arm" = "" ]; then
+			echo "/!\ Unable to find toolchain for ARM, exiting.."
+			return
+		fi
+		export CROSS_COMPILE="$toolchain_arm"
+	elif [ "$ARCH" = "arm64" ]; then
+		if [ "$toolchain_arm64" = "" ]; then
+			echo "/!\ Unable to find toolchain for ARM64, exiting.."
+			return
+		fi
+		export CROSS_COMPILE="$toolchain_arm64"
+	elif [ "$ARCH" = "i686" ]; then
+		if [ "$toolchain_i686" = "" ]; then
+			echo "/!\ Unable to find toolchain for Intel 32-bit, exiting.."
+			return
+		fi
+		export CROSS_COMPILE="$toolchain_i686"
+	elif [ "$ARCH" = "x86_64" ]; then
+		if [ "$toolchain_x86_64" = "" ]; then
+			echo "/!\ Unable to find toolchain for Intel 64-bit, exiting.."
+			return
+		fi
+		export CROSS_COMPILE="$toolchain_x86_64"
 	fi
 	if [ "$cores" = "auto" ]; then
 		cores="$(nproc --all)"
