@@ -205,7 +205,7 @@ config() {
 			printf "Is the detection correct [Y/n]? "
 			read -r confirm_toolchain
 			if [ "$confirm_toolchain" = "n" ]; then
-				no_arch = "1"
+				no_arch="1"
 			else
 				echo "toolchain_$toolchain_arch=$toolchain" >> "$conf_file"
 			fi
