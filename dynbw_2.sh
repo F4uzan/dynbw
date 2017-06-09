@@ -151,7 +151,59 @@ config() {
 		echo "Do not forget to include the hyphen at the end of the path!"
 		printf "Toolchain path: "
 		read -r toolchain
-		printf "toolchain_path=%s\n" "$toolchain" >> "$conf_file"
+		toolchain_arm="$(echo "$toolchain" | grep -c "arm" | sed -e "1{q}")"
+		toolchain_arm64="$(echo "$toolchain" | grep -c "aarch64" | sed -e "1{q}")"
+		toolchain_i686="$(echo "$toolchain" | grep -c "i686" | sed -e "1{q}")"
+		toolchain_x86_64="$(echo "$toolchain" | grep -c "x86_64" | sed -e "1{q}")"
+		no_arch=0
+		if [ "$toolchain_arm" -gt 0 ]; then
+			echo "/i\ ARM-compatible toolchain detected"
+			toolchain_arch=arm
+		elif [ "$toolchain_arm64" -gt 0 ]; then
+			echo "/i\ ARM64-compatible toolchain detected"
+			toolchain_arch=arm64
+		elif [ "$toolchain_i686" -gt 0 ]; then
+			echo "/i\ Intel 32-bit toolchain detected"
+			toolchain_arch=i686
+		elif [ "$toolchain_x86_64" -gt 0 ]; then
+			echo "/i\ Intel 64-bit toolchain detected"
+			toolchain_arch=x86_64
+		else
+			echo "/!\ Cannot detect toolchain architecture"
+			echo "/i\ Please manually enter the architecture"
+			no_arch=1
+		fi
+		if [ "$no_arch" = "0" ]; then
+			printf "Is the detection correct [Y/n]? "
+			read -r confirm_toolchain
+			if [ "$confirm_toolchain" = "n" ]; then
+				no_arch = "1"
+			else
+				echo "toolchain_$toolchain_arch=$toolchain" >> "$conf_file"
+			fi
+		fi
+		if [ "$no_arch" = "1" ]; then
+			echo "Available architecture"
+			echo
+			echo "1. ARM, 32-bit"
+			echo "2. ARM, 64-bit"
+			echo "3. Intel, 32-bit"
+			echo "4. Intel, 64-bit"
+			echo
+			printf "Select architecture [1-4]: "
+			read -r manual_arch
+			if [ "$manual_arch" = "1" ]; then
+				echo "toolchain_arm=$toolchain" >> "$conf_file"
+			elif [ "$manual_arch" = "2" ]; then
+				echo "toolchain_arm64=$toolchain" >> "$conf_file"
+			elif [ "$manual_arch" = "3" ]; then
+				echo "tooclhain_i686=$toolchain" >> "$conf_file"
+			elif [ "$manual_arch" = "4" ]; then
+				echo "toolchain_x86_64=$toolchain" >> "$conf_file"
+			else
+				echo "/!\ Invalid input, please manually reconfigure to enter toolchain architecture"
+			fi
+		fi
 		echo
 		echo "Configuration done!"
 		;;
