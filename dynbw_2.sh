@@ -61,7 +61,6 @@ build() {
 	import_var ccache_init
 	flag="$1"
 	defconfig="$2"
-	export CROSS_COMPILE="$toolchain_path"
 
 	case "$flag" in
 	--clean|-c) make clean ;;
