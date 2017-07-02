@@ -1,5 +1,8 @@
 DynBW, a dynamic kernel builder wrapper
 ------
+This README is valid only for the files contained in this folder (the deprecated folder). Do not use the information stored within it as a reference for the newer script(s) outside this directory.
+------
+
 DynBW is a customizable, universal Linux kernel builder. It is highly flexible, allowing further customizations when users needs it, it also not tied to kernel versions and architecture.
 Currently in alpha testing, it lacks any advanced features but I'm working to improve it.
 
