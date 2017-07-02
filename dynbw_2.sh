@@ -20,11 +20,11 @@ import_var() {
 		# Register variables based on the configuration
 		# Only register if the configuration exists
 		if [ -f "$conf_file" ]; then
-			cores="$(grep "cores=" "$conf_file" | cut -d"=" -f2 | sed -e "1{q}")"
-			toolchain_arm="$(grep "toolchain_arm=" "$conf_file" | cut -d"=" -f2 | sed -e "1{q}")"
-			toolchain_arm64="$(grep "toolchain_arm64=" "$conf_file" | cut -d"=" -f2 | sed -e "1{q}")"
-			toolchain_i686="$(grep "toolchain_i686=" "$conf_file" | cut -d"=" -f2 | sed -e "1{q}")"
-			toolchain_x86_64="$(grep "toolchain_x86_64=" "$conf_file" | cut -d"=" -f2 | sed -e "1{q}")"
+			cores="$(grep "cores=" "$conf_file" | cut -d"=" -f2 | sed -e '1{q;}')"
+			toolchain_arm="$(grep "toolchain_arm=" "$conf_file" | cut -d"=" -f2 | sed -e '1{q;}')"
+			toolchain_arm64="$(grep "toolchain_arm64=" "$conf_file" | cut -d"=" -f2 | sed -e '1{q;}')"
+			toolchain_i686="$(grep "toolchain_i686=" "$conf_file" | cut -d"=" -f2 | sed -e '1{q;}')"
+			toolchain_x86_64="$(grep "toolchain_x86_64=" "$conf_file" | cut -d"=" -f2 | sed -e '1{q;}')"
 		else
 			echo "/i\ Configuration file not found"
 			echo "Run 'config init' to create configuration file"
@@ -178,10 +178,10 @@ config() {
 		echo "Do not forget to include the hyphen at the end of the path!"
 		printf "Toolchain path: "
 		read -r toolchain
-		toolchain_arm="$(echo "$toolchain" | grep -c "arm" | sed -e "1{q}")"
-		toolchain_arm64="$(echo "$toolchain" | grep -c "aarch64" | sed -e "1{q}")"
-		toolchain_i686="$(echo "$toolchain" | grep -c "i686" | sed -e "1{q}")"
-		toolchain_x86_64="$(echo "$toolchain" | grep -c "x86_64" | sed -e "1{q}")"
+		toolchain_arm="$(echo "$toolchain" | grep -c "arm" | sed -e '1{q;}')"
+		toolchain_arm64="$(echo "$toolchain" | grep -c "aarch64" | sed -e '1{q;}')"
+		toolchain_i686="$(echo "$toolchain" | grep -c "i686" | sed -e '1{q;}')"
+		toolchain_x86_64="$(echo "$toolchain" | grep -c "x86_64" | sed -e '1{q;}')"
 		no_arch=0
 		if [ "$toolchain_arm" -gt 0 ]; then
 			echo "/i\ ARM-compatible toolchain detected"
