@@ -6,6 +6,10 @@ Compatible with practically everything that uses POSIX SH. This guarantees a vas
 
 This README is for the newest DynBW version. Those looking for older and deprecated version of DynBW can check the "deprecated" folder. Do note that the deprecated version will not be updated and is susceptible to issues.
 
+Installation
+-----
+Simply clone this repository or download it as a ZIP to get started. Copy "dynbw.sh" to your kernel directory and start building!
+
 Usage
 ------
 DynBW is not meant to be launched directly. Instead, you should export its function to your current terminal session:
