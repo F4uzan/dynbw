@@ -1,16 +1,7 @@
-DynBW, a dynamic kernel builder wrapper
+DynBW, a dynamic kernel build wrapper
 ------
-DynBW is a customizable, universal Linux kernel builder. It is highly flexible, allowing further customizations when users needs it, it also not tied to kernel versions and architecture.
-Currently in alpha testing, it lacks any advanced features but I'm working to improve it.
+DynBW is an easy-to-use kernel buildscript for Android-compatible kernel source. It is highly flexible and practical - all without a fancy semi-graphical interface. Its goal is to simplify and automate the process of building kernels, leaning towards newcomers to the kernel-building scenario.
 
-Compatibility:
-- Any Linux that uses BASH
-- Probably other shell types (SH, ZSH, et cetera), but it is untested
+Compatible with practically everything that uses POSIX SH. This guarantees a vast and wide compatibility with most Linux distributions and even those that are not inherently Linux but can use POSIX SH, such as macOS.
 
-You also need a properly working kernel source and a cross compiler, but if you have compiled a kernel before, you probably know the gist already.
-
-How to use :
-- Use the install.sh to symlink dynbw.sh to the root of your kernel directory
-- Launch dynbw.sh in the install path previously used in install.sh
-- Finish up the first-start configuration
-- Relaunch dynbw.sh to compile your kernel
+This README is for the newest DynBW version. Those looking for older and deprecated version of DynBW can check the "deprecated" folder. Do note that the deprecated version will not be updated and is susceptible to issues. 
