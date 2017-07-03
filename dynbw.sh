@@ -186,15 +186,19 @@ config() {
 		if [ "$toolchain_arm" -gt 0 ]; then
 			echo "/i\ ARM-compatible toolchain detected"
 			toolchain_arch=arm
+			toolchain_exclude="arm64, i686, x86_64"
 		elif [ "$toolchain_arm64" -gt 0 ]; then
 			echo "/i\ ARM64-compatible toolchain detected"
 			toolchain_arch=arm64
+			toolchain_exclude="arm, i686, x86_64"
 		elif [ "$toolchain_i686" -gt 0 ]; then
 			echo "/i\ Intel 32-bit toolchain detected"
 			toolchain_arch=i686
+			toolchain_exclude="arm, arm64, x86_64"
 		elif [ "$toolchain_x86_64" -gt 0 ]; then
 			echo "/i\ Intel 64-bit toolchain detected"
 			toolchain_arch=x86_64
+			toolchain_exclude="arm, arm64, i686"
 		else
 			echo "/!\ Cannot detect toolchain architecture"
 			echo "/i\ Please manually enter the architecture"
@@ -207,6 +211,12 @@ config() {
 				no_arch="1"
 			else
 				echo "toolchain_$toolchain_arch=$toolchain" >> "$conf_file"
+				c=1;
+				while [ "$c" -le 3 ]; do
+					exc_t="$(echo $toolchain_exclude | cut -d"," -f$c | xargs)";
+					c=$((c+1));
+					echo "toolchain_$exc_t=" >> "$conf_file"
+				done;
 			fi
 		fi
 		if [ "$no_arch" = "1" ]; then
@@ -221,12 +231,24 @@ config() {
 			read -r manual_arch
 			if [ "$manual_arch" = "1" ]; then
 				echo "toolchain_arm=$toolchain" >> "$conf_file"
+				echo "toolchain_arm64=" >> "$conf_file"
+				echo "toolchain_i686=" >> "$conf_file"
+				echo "toolchain_x86_64=" >> "$conf_file"
 			elif [ "$manual_arch" = "2" ]; then
 				echo "toolchain_arm64=$toolchain" >> "$conf_file"
+				echo "toolchain_arm=" >> "$conf_file"
+				echo "toolchain_i686=" >> "$conf_file"
+				echo "toolchain_x86_64=" >> "$conf_file"
 			elif [ "$manual_arch" = "3" ]; then
 				echo "tooclhain_i686=$toolchain" >> "$conf_file"
+				echo "toolchain_arm=" >> "$conf_file"
+				echo "toolchain_arm64=" >> "$conf_file"
+				echo "toolchain_x86_64=" >> "$conf_file"
 			elif [ "$manual_arch" = "4" ]; then
 				echo "toolchain_x86_64=$toolchain" >> "$conf_file"
+				echo "toolchain_arm=" >> "$conf_file"
+				echo "toolchain_arm64=" >> "$conf_file"
+				echo "toolchain_i686=" >> "$conf_file"
 			else
 				echo "/!\ Invalid input, please manually reconfigure to enter toolchain architecture"
 			fi
@@ -244,13 +266,36 @@ config() {
 			cores_display="Automatic"
 		else
 			cores_display="$cores"
-		fi 
+		fi
+		if [ "$toolchain_arm" = "" ]; then
+			arm_path="Empty"
+		else
+			arm_path="$toolchain_arm"
+		fi
+		if [ "$toolchain_arm64" = "" ]; then
+			arm64_path="Empty"
+		else
+			arm64_path="$toolchain_arm64"
+		fi
+		if [ "$toolchain_i686" = "" ]; then
+			i686_path="Empty"
+		else
+			i686_path="$toolchain_i686"
+		fi
+		if [ "$toolchain_x86_64" = "" ]; then
+			x86_64_path="Empty"
+		else
+			x86_64_path="$toolchain_x86_64"
+		fi
 		echo "List of available configuration"
 		echo
-		echo "1.) Cores count   : $cores_display"
-		echo "2.) Toolchain path: $toolchain_path"
+		echo "1.) Cores count        : $cores_display"
+		echo "2.) ARM Toolchain      : $arm_path"
+		echo "3.) ARM64 Toolchain    : $arm64_path"
+		echo "4.) Intel-32 Toolchain : $i686_path"
+		echo "5.) Intel-64 Toolchain : $x86_64_path"
 		echo
-		printf "Configuration to modify [1-2]: "
+		printf "Configuration to modify [1-5]: "
 		read -r c_re
 		if [ "$c_re" = "1" ]; then
 			echo
@@ -259,14 +304,27 @@ config() {
 			sed -i -e "s/cores=$cores/cores=$re_cores/g" "$conf_file"
 			echo "/i\ Cores count changed to $re_cores"
 			return
-		elif [ "$c_re" = "2" ]; then
+		elif [ "$c_re" -gt "1" ]; then
+			if [ "$c_re" = "2" ]; then
+				c_toolchain="toolchain_arm"
+				v_toolchain="$toolchain_arm"
+			elif [ "$c_re" = "3" ]; then
+				c_toolchain="toolchain_arm64"
+				v_toolchain="$toolchain_arm64"
+			elif [ "$c_re" = "4" ]; then
+				c_toolchain="toolchain_i686"
+				v_toolchain="$toolchain_i686"
+			elif [ "$c_re" = "5" ]; then
+				c_toolchain="toolchain_x86_64"
+				v_toolchain="$toolchain_x86_64"
+			fi
 			echo
 			printf "New toolchain path: "
 			read -r re_toolchain
-			sed -i -e "s#toolchain_path=$toolchain_path#toolchain_path=$re_toolchain#g" "$conf_file"
+			sed -i -e "s#$c_toolchain=$v_toolchain#$c_toolchain=$re_toolchain#g" "$conf_file"
 			echo "/i\ Toolchain path changed to $re_toolchain"
 			return
-		else
+		elif [ "$c_re" -gt "5" ]; then
 			echo "/!\ $c_re: Invalid input"
 			return
 		fi
