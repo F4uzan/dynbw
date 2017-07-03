@@ -213,7 +213,7 @@ config() {
 				echo "toolchain_$toolchain_arch=$toolchain" >> "$conf_file"
 				c=1;
 				while [ "$c" -le 3 ]; do
-					exc_t="$(echo $toolchain_exclude | cut -d"," -f$c | xargs)";
+					exc_t="$(echo "$toolchain_exclude" | cut -d"," -f$c | xargs)";
 					c=$((c+1));
 					echo "toolchain_$exc_t=" >> "$conf_file"
 				done;
@@ -230,25 +230,33 @@ config() {
 			printf "Select architecture [1-4]: "
 			read -r manual_arch
 			if [ "$manual_arch" = "1" ]; then
-				echo "toolchain_arm=$toolchain" >> "$conf_file"
-				echo "toolchain_arm64=" >> "$conf_file"
-				echo "toolchain_i686=" >> "$conf_file"
-				echo "toolchain_x86_64=" >> "$conf_file"
+				{
+					echo "toolchain_arm=$toolchain"
+					echo "toolchain_arm64="
+					echo "toolchain_i686="
+					echo "toolchain_x86_64="
+				}  >> "$conf_file"
 			elif [ "$manual_arch" = "2" ]; then
-				echo "toolchain_arm64=$toolchain" >> "$conf_file"
-				echo "toolchain_arm=" >> "$conf_file"
-				echo "toolchain_i686=" >> "$conf_file"
-				echo "toolchain_x86_64=" >> "$conf_file"
+				{
+					echo "toolchain_arm64=$toolchain"
+					echo "toolchain_arm="
+					echo "toolchain_i686="
+					echo "toolchain_x86_64="
+				} >> "$conf_file"
 			elif [ "$manual_arch" = "3" ]; then
-				echo "tooclhain_i686=$toolchain" >> "$conf_file"
-				echo "toolchain_arm=" >> "$conf_file"
-				echo "toolchain_arm64=" >> "$conf_file"
-				echo "toolchain_x86_64=" >> "$conf_file"
+				{
+					echo "tooclhain_i686=$toolchain"
+					echo "toolchain_arm="
+					echo "toolchain_arm64="
+					echo "toolchain_x86_64="
+				}  >> "$conf_file"
 			elif [ "$manual_arch" = "4" ]; then
-				echo "toolchain_x86_64=$toolchain" >> "$conf_file"
-				echo "toolchain_arm=" >> "$conf_file"
-				echo "toolchain_arm64=" >> "$conf_file"
-				echo "toolchain_i686=" >> "$conf_file"
+				{
+					echo "toolchain_x86_64=$toolchain"
+					echo "toolchain_arm="
+					echo "toolchain_arm64="
+					echo "toolchain_i686="
+				}  >> "$conf_file"
 			else
 				echo "/!\ Invalid input, please manually reconfigure to enter toolchain architecture"
 			fi
@@ -325,8 +333,10 @@ config() {
 			echo "/i\ Toolchain path changed to $re_toolchain"
 			return
 		elif [ "$c_re" -gt "5" ]; then
-			echo "/!\ $c_re: Invalid input"
+			echo "/!\ $c_re: Input out of range"
 			return
+		else
+			echo "/!\ $c_re: Invalid input"
 		fi
 		;;
 	--help|-h|*)
