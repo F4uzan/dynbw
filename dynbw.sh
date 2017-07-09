@@ -235,7 +235,7 @@ config() {
 					echo "toolchain_arm64="
 					echo "toolchain_i686="
 					echo "toolchain_x86_64="
-				}  >> "$conf_file"
+				} >> "$conf_file"
 			elif [ "$manual_arch" = "2" ]; then
 				{
 					echo "toolchain_arm64=$toolchain"
@@ -249,14 +249,14 @@ config() {
 					echo "toolchain_arm="
 					echo "toolchain_arm64="
 					echo "toolchain_x86_64="
-				}  >> "$conf_file"
+				} >> "$conf_file"
 			elif [ "$manual_arch" = "4" ]; then
 				{
 					echo "toolchain_x86_64=$toolchain"
 					echo "toolchain_arm="
 					echo "toolchain_arm64="
 					echo "toolchain_i686="
-				}  >> "$conf_file"
+				} >> "$conf_file"
 			else
 				echo "/!\ Invalid input, please manually reconfigure to enter toolchain architecture"
 			fi
