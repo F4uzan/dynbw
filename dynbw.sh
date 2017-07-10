@@ -133,6 +133,8 @@ build() {
 			cores="$(sysctl -n hw.ncpu)"
 		elif [ "$OS" = "linux" ]; then
 			cores="$(nproc --all)"
+		else
+			cores="1"
 		fi
 	fi
 	make "$defconfig" && make -j"$cores"
