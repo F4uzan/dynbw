@@ -153,16 +153,17 @@ config() {
 	case "$arg" in
 	--init|-i)
 		import_var conf_init
+		temp_conf_file=".dynbw_config_temp"
 		if [ -f "$conf_file" ]; then
 			echo "/!\ Existing configuration file found, exiting..."
 			return
 		fi
 		echo "Initialising configuration..."
-		touch "$conf_file"
+		touch "$temp_conf_file"
 		printf "Automatically detect CPU cores count for build system [Y/n]? "
 		read -r a_cores
 		if [ "$a_cores" = "y" ]; then
-			printf "cores=auto\n" >> "$conf_file"
+			printf "cores=auto\n" >> "$temp_conf_file"
 		else
 			echo
 			printf "How many CPU cores should the build system use? "
@@ -170,10 +171,10 @@ config() {
 			case "$p_cores" in
 			''|*[!0-9]*) 
 				echo "/!\ Invalid input detected, using automated cores detection instead"
-				printf "cores=auto\n" >> "$conf_file"
+				printf "cores=auto\n" >> "$temp_conf_file"
 				;;
 			*)
-				printf "cores=%s\n" "$p_cores" >> "$conf_file"
+				printf "cores=%s\n" "$p_cores" >> "$temp_conf_file"
 				;;
 		esac
 		fi
@@ -182,6 +183,10 @@ config() {
 		echo "Do not forget to include the hyphen at the end of the path!"
 		printf "Toolchain path: "
 		read -r toolchain
+		if [ "$toolchain" = "" ]; then
+			echo "/!\ Empty input, exiting..."
+			rm "$temp_conf_file"
+		fi
 		toolchain_arm="$(echo "$toolchain" | grep -c "arm" | sed -e '1{q;}')"
 		toolchain_arm64="$(echo "$toolchain" | grep -c "aarch64" | sed -e '1{q;}')"
 		toolchain_i686="$(echo "$toolchain" | grep -c "i686" | sed -e '1{q;}')"
@@ -204,7 +209,7 @@ config() {
 			toolchain_arch=x86_64
 			toolchain_exclude="arm, arm64, i686"
 		else
-			echo "/!\ Cannot detect toolchain architecture"
+			echo "/!\ Unable to automatically detect toolchain architecture"
 			echo "/i\ Please manually enter the architecture"
 			no_arch=1
 		fi
@@ -214,12 +219,12 @@ config() {
 			if [ "$confirm_toolchain" = "n" ]; then
 				no_arch="1"
 			else
-				echo "toolchain_$toolchain_arch=$toolchain" >> "$conf_file"
+				echo "toolchain_$toolchain_arch=$toolchain" >> "$temp_conf_file"
 				c=1;
 				while [ "$c" -le 3 ]; do
 					exc_t="$(echo "$toolchain_exclude" | cut -d"," -f$c | xargs)";
 					c=$((c+1));
-					echo "toolchain_$exc_t=" >> "$conf_file"
+					echo "toolchain_$exc_t=" >> "$temp_conf_file"
 				done;
 			fi
 		fi
@@ -239,33 +244,36 @@ config() {
 					echo "toolchain_arm64="
 					echo "toolchain_i686="
 					echo "toolchain_x86_64="
-				} >> "$conf_file"
+				} >> "$temp_conf_file"
 			elif [ "$manual_arch" = "2" ]; then
 				{
 					echo "toolchain_arm64=$toolchain"
 					echo "toolchain_arm="
 					echo "toolchain_i686="
 					echo "toolchain_x86_64="
-				} >> "$conf_file"
+				} >> "$temp_conf_file"
 			elif [ "$manual_arch" = "3" ]; then
 				{
 					echo "tooclhain_i686=$toolchain"
 					echo "toolchain_arm="
 					echo "toolchain_arm64="
 					echo "toolchain_x86_64="
-				} >> "$conf_file"
+				} >> "$temp_conf_file"
 			elif [ "$manual_arch" = "4" ]; then
 				{
 					echo "toolchain_x86_64=$toolchain"
 					echo "toolchain_arm="
 					echo "toolchain_arm64="
 					echo "toolchain_i686="
-				} >> "$conf_file"
+				} >> "$temp_conf_file"
 			else
-				echo "/!\ Invalid input, please manually reconfigure to enter toolchain architecture"
+				echo "/!\ Invalid input, exiting..."
+				rm "$temp_conf_file"
+				return
 			fi
 		fi
 		echo
+		mv "$temp_conf_file" "$conf_file"
 		echo "Configuration done!"
 		;;
 	--reconfig|-r)
