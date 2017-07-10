@@ -10,6 +10,15 @@
 
 dynbw_version=1.0
 
+GET_OS="$(uname -s)"
+if [ "$GET_OS" = "Darwin" ]; then
+	OS=darwin
+elif [ "$GET_OS" = "Linux" ]; then
+	OS=linux
+else
+	OS=linux
+fi
+
 # Internal function: Imports variable
 import_var() {
 	arg="$1"
@@ -129,7 +138,11 @@ build() {
 		export CROSS_COMPILE="$toolchain_x86_64"
 	fi
 	if [ "$cores" = "auto" ]; then
-		cores="$(nproc --all)"
+		if [ "$OS" = "darwin" ]; then
+			cores="$(sysctl -n machdep.cpu.core_count)"
+		elif [ "$OS" = "linux" ]; then
+			cores="$(nproc --all)"
+		fi
 	fi
 	make "$defconfig" && make -j"$cores"
 }
