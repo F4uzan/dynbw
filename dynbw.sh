@@ -186,6 +186,7 @@ config() {
 		if [ "$toolchain" = "" ]; then
 			echo "/!\ Empty input, exiting..."
 			rm "$temp_conf_file"
+			return
 		fi
 		toolchain_arm="$(echo "$toolchain" | grep -c "arm" | sed -e '1{q;}')"
 		toolchain_arm64="$(echo "$toolchain" | grep -c "aarch64" | sed -e '1{q;}')"
