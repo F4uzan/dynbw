@@ -162,7 +162,7 @@ config() {
 		touch "$temp_conf_file"
 		printf "Automatically detect CPU cores count for build system [Y/n]? "
 		read -r a_cores
-		if [ "$a_cores" = "y" ]; then
+		if [ "$(echo "$a_cores" | tr "[:upper:]" "[:lower:]")" = "y" ]; then
 			printf "cores=auto\n" >> "$temp_conf_file"
 		else
 			echo
@@ -216,7 +216,7 @@ config() {
 		if [ "$no_arch" = "0" ]; then
 			printf "Is the detection correct [Y/n]? "
 			read -r confirm_toolchain
-			if [ "$confirm_toolchain" = "n" ]; then
+			if [ "$(echo "$confirm_toolchain" | tr "[:upper:]" "[:lower:]")" = "n" ]; then
 				no_arch="1"
 			else
 				echo "toolchain_$toolchain_arch=$toolchain" >> "$temp_conf_file"
