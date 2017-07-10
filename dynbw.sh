@@ -130,7 +130,7 @@ build() {
 	fi
 	if [ "$cores" = "auto" ]; then
 		if [ "$(uname -s)" = "Darwin" ]; then
-			cores="$(sysctl -n machdep.cpu.core_count)"
+			cores="$(sysctl -n hw.ncpu)"
 		elif [ "$OS" = "linux" ]; then
 			cores="$(nproc --all)"
 		fi
