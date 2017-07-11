@@ -131,7 +131,7 @@ build() {
 	if [ "$cores" = "auto" ]; then
 		if [ "$(uname -s)" = "Darwin" ]; then
 			cores="$(sysctl -n hw.ncpu)"
-		elif [ "$OS" = "linux" ]; then
+		elif [ "$(uname -s)" = "Linux" ]; then
 			cores="$(nproc --all)"
 		else
 			cores="1"
