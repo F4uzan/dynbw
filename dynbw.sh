@@ -374,13 +374,15 @@ config() {
 # Fetches everything defined in sync_fetch.txt
 #
 # Usage:
-# sync <save directory/argument>
+# sync <argument> <save directory> or sync <argument>
 #
 # Arguments:
+# --force: Force update repositories, ignoring errors
 # --help: Shows help
 sync() {
-	dir="$1"
-	case "$dir" in
+	arg="$1"
+	dir="$2"
+	case "$arg" in
 	--help|-h)
 		echo "DynBW v$dynbw_version"
 		echo
@@ -388,17 +390,22 @@ sync() {
 		echo "Please read the supplied README before using sync"
 		echo
 		echo "Usage:"
-		echo "sync <save directory> or sync <argument>"
+		echo "sync <argument> <save directory> or sync <argument>"
 		echo
 		echo "Argument:"
+		echo "--force: Force update repositories, ignoring errors"
 		echo "--help: Shows help"
 		return
+		;;
+	--force|-f)
+		use_force=true
 		;;
 	esac
 	if [ ! -d "$dir" ]; then
 		mkdir -p "$dir"
 	fi
 	input_fetch="$(cat sync_fetch.txt)"
+	currdir="$(pwd)"
 	for line in $input_fetch; do
 		dest="$(echo $line | cut -d"|" -f1)"
 		branch="$(echo $line | cut -d"|" -f2)"
@@ -406,7 +413,17 @@ sync() {
 		if [ ! -d "$dir/$dest" ]; then
 			git clone -b "$branch" "$link" "$dir/$dest"
 		else
-			echo "/!\ $dir/$dest found. Ignoring clone"
+			if [ "$use_force" = "true" ]; then
+				echo "/!\ $dir/$dest found. Force updating instead"
+				cd "$dir/$dest"
+				git pull
+				cd "$currdir"
+			else
+				echo "/!\ $dir/$dest found. Updating instead"
+				cd "$dir/$dest"
+				git pull -f
+				cd "$currdir"
+			fi
 		fi
 	done
 }
