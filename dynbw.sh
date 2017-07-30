@@ -368,3 +368,23 @@ config() {
 		echo "--help: Shows help"
 	esac
 }
+
+# A helper function for Git
+# Acts in a similar manner to that of "repo"
+# Fetches everything defined in sync_fetch.txt
+#
+# Usage:
+# sync <save directory>
+sync() {
+	dir="$1"
+	if [ ! -d "$dir" ]; then
+		mkdir -p "$dir"
+	fi
+	input_fetch="$(cat sync_fetch.txt)"
+	for line in $input_fetch; do
+		dest="$(echo $line | cut -d"|" -f1)"
+		branch="$(echo $line | cut -d"|" -f2)"
+		link="$(echo $line | cut -d"|" -f3)"
+		git clone -b "$branch" "$link" "$dir/$dest"
+	done
+}
