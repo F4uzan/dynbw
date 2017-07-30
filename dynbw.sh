@@ -417,16 +417,20 @@ sync() {
 		if [ ! -d "$dir/$dest" ]; then
 			git clone -b "$branch" "$link" "$dir/$dest"
 		else
-			if [ "$use_force" = "true" ]; then
-				echo "/!\ $dir/$dest found. Force updating instead"
-				cd "$dir/$dest"
-				git pull
-				cd "$currdir"
+			if [ ! -d "$dir/$dest/.git" ]; then
+				echo "/!\ $dir/$dest found, but it's not a Git repository. Ignoring sync for $dest"
 			else
-				echo "/!\ $dir/$dest found. Updating instead"
-				cd "$dir/$dest"
-				git pull -f
-				cd "$currdir"
+				if [ "$use_force" = "true" ]; then
+					echo "/!\ $dir/$dest found. Force updating instead"
+					cd "$dir/$dest"
+					git pull
+					cd "$currdir"
+				else
+					echo "/!\ $dir/$dest found. Updating instead"
+					cd "$dir/$dest"
+					git pull -f
+					cd "$currdir"
+				fi
 			fi
 		fi
 	done
