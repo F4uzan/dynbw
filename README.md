@@ -34,3 +34,27 @@ Command help can also be accessed through their internal "--help" argument:
 
 	build --help
 	config --help
+	
+Using 'sync'
+------
+Sync is used to mass-clone repositories defined in sync_fetch.txt - as a cheap replacement of the famous 'repo' tool, it works almost the same way as 'repo'.
+
+To start using sync, you need to create the sync_fetch.txt. This file **must** be in the same directory as the dynbw script. In a future update, I'll try implementing a function similar to 'repo' where sync searches for the file in the current folder instead of in the same folder as dynbw.
+
+The sync_fetch.txt is parsed using this format:
+
+	folder destination|branch|link to repository
+	
+So, if you were to add the master branch of dynbw, it'll be like so:
+
+	dynbw|master|https://github.com/F4uzan/dynbw
+	
+The repository is saved in the folder defined when calling sync. It is the argument you have to supply to call sync:
+
+	sync where_to_save
+	
+Following the dynbw example above, the command below will save the 'dynbw' folder to 'synced' and thus it'll be vieweable in 'synced/dynbw':
+
+	sync synced
+	
+Sync is _still_ in its very early stage. It is no way a replacement for the actual repo tool and will never be. It is meant to be a dumbed-down, easy-to-approach alternative for repo and should _only_ be used alongside dynbw.

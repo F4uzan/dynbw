@@ -374,9 +374,27 @@ config() {
 # Fetches everything defined in sync_fetch.txt
 #
 # Usage:
-# sync <save directory>
+# sync <save directory/argument>
+#
+# Arguments:
+# --help: Shows help
 sync() {
 	dir="$1"
+	case "$dir" in
+	--help|-h)
+		echo "DynBW v$dynbw_version"
+		echo
+		echo "Synces repositories defined in sync_fetch.txt"
+		echo "Please read the supplied README before using sync"
+		echo
+		echo "Usage:"
+		echo "sync <save directory> or sync <argument>"
+		echo
+		echo "Argument:"
+		echo "--help: Shows help"
+		return
+		;;
+	esac
 	if [ ! -d "$dir" ]; then
 		mkdir -p "$dir"
 	fi
