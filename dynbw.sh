@@ -403,6 +403,10 @@ sync() {
 		dest="$(echo $line | cut -d"|" -f1)"
 		branch="$(echo $line | cut -d"|" -f2)"
 		link="$(echo $line | cut -d"|" -f3)"
-		git clone -b "$branch" "$link" "$dir/$dest"
+		if [ ! -d "$dir/$dest" ]; then
+			git clone -b "$branch" "$link" "$dir/$dest"
+		else
+			echo "/!\ $dir/$dest found. Ignoring clone"
+		fi
 	done
 }
