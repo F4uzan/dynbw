@@ -400,6 +400,10 @@ sync() {
 	--force|-f)
 		use_force=true
 		;;
+	*)
+		dir="$1"
+		use_force=false
+		;;
 	esac
 	if [ ! -d "$dir" ]; then
 		mkdir -p "$dir"
