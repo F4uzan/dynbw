@@ -430,7 +430,7 @@ sync() {
 					cd "$currdir"
 				fi
 			else
-				echo "/!\ $dir/$dest found, but it's not a Git repository. Ignoring sync for $dest"
+				echo "/!\ $dir/$dest found, but it's not a valid Git repository. Ignoring sync for $dest"
 			fi
 		fi
 	done
