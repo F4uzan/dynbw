@@ -410,28 +410,33 @@ sync() {
 	if [ ! -d "$dir" ]; then
 		mkdir -p "$dir"
 	fi
+	local IFS=$'\n'
 	for line in $input_fetch; do
-		dest="$(echo "$line" | cut -d"|" -f1)"
-		branch="$(echo "$line" | cut -d"|" -f2)"
-		link="$(echo "$line" | cut -d"|" -f3)"
-		if [ ! -d "$dir/$dest" ]; then
-			git clone -b "$branch" "$link" "$dir/$dest"
-		else
-			if [ "$(git rev-parse --resolve-git-dir "$dir/$dest/.git")" = "$dir/$dest/.git" ]; then
-				if [ "$use_force" = "true" ]; then
-					echo "/!\ $dir/$dest found. Force updating instead"
-					cd "$dir/$dest" || return
-					git pull
-					cd "$currdir" || return
-				else
-					echo "/!\ $dir/$dest found. Updating instead"
-					cd "$dir/$dest" || return
-					git pull -f
-					cd "$currdir" || return
-				fi
+		is_comment="$(echo "$line" | head -c1)"
+		if [ "$is_comment" != "#" ]; then
+			dest="$(echo "$line" | cut -d"|" -f1)"
+			branch="$(echo "$line" | cut -d"|" -f2)"
+			link="$(echo "$line" | cut -d"|" -f3)"
+			if [ ! -d "$dir/$dest" ]; then
+				git clone -b "$branch" "$link" "$dir/$dest"
 			else
-				echo "/!\ $dir/$dest found, but it's not a valid Git repository. Ignoring sync for $dest"
+				if [ "$(git rev-parse --resolve-git-dir "$dir/$dest/.git")" = "$dir/$dest/.git" ]; then
+					if [ "$use_force" = "true" ]; then
+						echo "/!\ $dir/$dest found. Force updating instead"
+						cd "$dir/$dest" || return
+						git pull
+						cd "$currdir" || return
+					else
+						echo "/!\ $dir/$dest found. Updating instead"
+						cd "$dir/$dest" || return
+						git pull -f
+						cd "$currdir" || return
+					fi
+				else
+					echo "/!\ $dir/$dest found, but it's not a valid Git repository. Ignoring sync for $dest"
+				fi
 			fi
 		fi
 	done
+	unset IFS
 }
