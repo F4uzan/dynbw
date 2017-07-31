@@ -382,6 +382,8 @@ config() {
 sync() {
 	arg="$1"
 	dir="$2"
+	currdir="$(pwd)"
+	input_fetch="$(cat sync_fetch.txt)"
 	case "$arg" in
 	--help|-h)
 		echo "DynBW v$dynbw_version"
@@ -408,8 +410,6 @@ sync() {
 	if [ ! -d "$dir" ]; then
 		mkdir -p "$dir"
 	fi
-	input_fetch="$(cat sync_fetch.txt)"
-	currdir="$(pwd)"
 	for line in $input_fetch; do
 		dest="$(echo $line | cut -d"|" -f1)"
 		branch="$(echo $line | cut -d"|" -f2)"
