@@ -39,22 +39,30 @@ Using 'sync'
 ------
 Sync is used to mass-clone repositories defined in sync.txt - as a cheap replacement of the famous 'repo' tool, it works almost the same way as 'repo'.
 
-To start using sync, you need to create the sync.txt. This file **must** be in the same directory as the dynbw script. In a future update, I'll try implementing a function similar to 'repo' where sync searches for the file in the current folder instead of in the same folder as dynbw.
+To start using sync, you need to create the sync.txt. DynBW will search for sync.txt in the current directory you are in, hence you can have multiple sync.txt for different kernel _without_ having multiple copies of the DynBW script.
 
-The sync_fetch.txt is parsed using this format:
+The sync.txt is parsed using this format:
 
 	folder destination|branch|link to repository
 	
-So, if you were to add the master branch of dynbw, it'll be like so:
+Sync also accepts commenting on lines using Shell style comments (pound/hash):
 
+	# This is a comment!
+	folder destionation|branch|link to repository
+	
+Comments are ignored and won't be parsed by sync, much like a comment on a Shell script.
+
+As a small example, if you were to add the master branch of DynBW, it'll be like so:
+
+	# Add DynBW
 	dynbw|master|https://github.com/F4uzan/dynbw
 	
 The repository is saved in the folder defined when calling sync. It is the argument you have to supply to call sync:
 
 	sync where_to_save
 	
-Following the dynbw example above, the command below will save the 'dynbw' folder to 'synced' and thus it'll be vieweable in 'synced/dynbw':
+Following the 'dynbw' example above, the command below will save the 'dynbw' folder to 'synced' and thus it'll be vieweable in 'synced/dynbw':
 
 	sync synced
 	
-Sync is _still_ in its very early stage. It is no way a replacement for the actual repo tool and will never be. It is meant to be a dumbed-down, easy-to-approach alternative for repo and should _only_ be used alongside dynbw.
+Sync is _still_ in its very early stage. It is no way a replacement for the actual repo tool and will never be. It is meant to be a dumbed-down, easy-to-approach alternative for repo and should _only_ be used alongside DynBW.
