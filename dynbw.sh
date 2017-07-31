@@ -417,9 +417,7 @@ sync() {
 		if [ ! -d "$dir/$dest" ]; then
 			git clone -b "$branch" "$link" "$dir/$dest"
 		else
-			if [ ! -d "$dir/$dest/.git" ]; then
-				echo "/!\ $dir/$dest found, but it's not a Git repository. Ignoring sync for $dest"
-			else
+			if [ "$(git rev-parse --resolve-git-dir "$dir/$dest/.git")" = "$dir/$dest/.git" ]; then
 				if [ "$use_force" = "true" ]; then
 					echo "/!\ $dir/$dest found. Force updating instead"
 					cd "$dir/$dest"
@@ -431,6 +429,8 @@ sync() {
 					git pull -f
 					cd "$currdir"
 				fi
+			else
+				echo "/!\ $dir/$dest found, but it's not a Git repository. Ignoring sync for $dest"
 			fi
 		fi
 	done
