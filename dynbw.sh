@@ -371,7 +371,7 @@ config() {
 
 # A helper function for Git
 # Acts in a similar manner to that of "repo"
-# Fetches everything defined in sync_fetch.txt
+# Fetches everything defined in sync.txt
 #
 # Usage:
 # sync <argument> <save directory> or sync <argument>
@@ -388,7 +388,7 @@ sync() {
 	--help|-h)
 		echo "DynBW v$dynbw_version"
 		echo
-		echo "Synces repositories defined in sync_fetch.txt"
+		echo "Synces repositories defined in sync.txt"
 		echo "Please read the supplied README before using sync"
 		echo
 		echo "Usage:"

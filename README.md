@@ -37,9 +37,9 @@ Command help can also be accessed through their internal "--help" argument:
 	
 Using 'sync'
 ------
-Sync is used to mass-clone repositories defined in sync_fetch.txt - as a cheap replacement of the famous 'repo' tool, it works almost the same way as 'repo'.
+Sync is used to mass-clone repositories defined in sync.txt - as a cheap replacement of the famous 'repo' tool, it works almost the same way as 'repo'.
 
-To start using sync, you need to create the sync_fetch.txt. This file **must** be in the same directory as the dynbw script. In a future update, I'll try implementing a function similar to 'repo' where sync searches for the file in the current folder instead of in the same folder as dynbw.
+To start using sync, you need to create the sync.txt. This file **must** be in the same directory as the dynbw script. In a future update, I'll try implementing a function similar to 'repo' where sync searches for the file in the current folder instead of in the same folder as dynbw.
 
 The sync_fetch.txt is parsed using this format:
 
