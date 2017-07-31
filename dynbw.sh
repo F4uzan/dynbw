@@ -383,7 +383,7 @@ sync() {
 	arg="$1"
 	dir="$2"
 	currdir="$(pwd)"
-	input_fetch="$(cat sync_fetch.txt)"
+	input_fetch="$(cat sync.txt)"
 	case "$arg" in
 	--help|-h)
 		echo "DynBW v$dynbw_version"
