@@ -61,7 +61,7 @@ The repository is saved in the folder defined when calling sync. It is the argum
 
 	sync where_to_save
 	
-Following the 'dynbw' example above, the command below will save the 'dynbw' folder to 'synced' and thus it'll be vieweable in 'synced/dynbw':
+Following the 'dynbw' example above, the command below will save the 'dynbw' folder to 'synced' and thus it'll be viewable in 'synced/dynbw':
 
 	sync synced
 	
