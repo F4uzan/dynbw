@@ -374,14 +374,13 @@ config() {
 # Fetches everything defined in sync.txt
 #
 # Usage:
-# sync <argument> <save directory> or sync <argument>
+# sync <argument>
 #
 # Arguments:
 # --force: Force update repositories, ignoring errors
 # --help: Shows help
 sync() {
 	arg="$1"
-	dir="$2"
 	currdir="$(pwd)"
 	if [ ! -f "sync.txt" ]; then
 		echo "/!\ Cannot find sync.txt in the current directory"
@@ -396,7 +395,7 @@ sync() {
 		echo "Please read the supplied README before using sync"
 		echo
 		echo "Usage:"
-		echo "sync <argument> <save directory> or sync <argument>"
+		echo "sync <argument>"
 		echo
 		echo "Argument:"
 		echo "--force: Force update repositories, ignoring errors"
@@ -406,21 +405,34 @@ sync() {
 	--force|-f)
 		use_force=true
 		;;
-	*)
-		dir="$1"
-		use_force=false
-		;;
 	esac
-	if [ ! -d "$dir" ]; then
-		mkdir -p "$dir"
-	fi
 	local IFS=$'\n'
 	for line in $input_fetch; do
 		is_comment="$(echo "$line" | head -c1)"
-		if [ "$is_comment" != "#" ]; then
+		if [ "$is_comment" = "/" ]; then
+			cmd="$(echo "$line" | cut -d":" -f1)"
+			arg="$(echo "$line" | cut -d":" -f2)"
+			if [ "$cmd" = "/save_to" ]; then
+				dir="$arg"
+				if [ ! -d "$dir" ]; then
+					mkdir -p "$dir"
+				fi
+			elif [ "$cmd" = "/ save_to" ]; then
+				dir="$arg"
+				if [ ! -d "$dir" ]; then
+					mkdir -p "$dir"
+				fi
+			else
+				echo "/!\ $cmd: command not found"
+			fi
+		elif [ "$is_comment" != "#" ]; then
 			dest="$(echo "$line" | cut -d"|" -f1)"
 			branch="$(echo "$line" | cut -d"|" -f2)"
 			link="$(echo "$line" | cut -d"|" -f3)"
+			if [ "$dir" = "" ]; then
+				echo "/!\ No sync directory is set, canceling sync"
+				return
+			fi
 			if [ ! -d "$dir/$dest" ]; then
 				git clone -b "$branch" "$link" "$dir/$dest"
 			else
