@@ -34,35 +34,46 @@ Command help can also be accessed through their internal "--help" argument:
 
 	build --help
 	config --help
-	
+
 Using 'sync'
 ------
-Sync is used to mass-clone repositories defined in sync.txt - as a cheap replacement of the famous 'repo' tool, it works almost the same way as 'repo'.
+Sync is used to mass-clone repositories defined in sync.txt - as a cheap replacement of the famous 'repo' tool, it works almost in the same way as 'repo'.
 
 To start using sync, you need to create the sync.txt. DynBW will search for sync.txt in the current directory you are in, hence you can have multiple sync.txt for different kernel _without_ having multiple copies of the DynBW script.
 
 The sync.txt is parsed using this format:
 
 	folder destination|branch|link to repository
-	
+
 Sync also accepts commenting on lines using Shell style comments (pound/hash):
 
 	# This is a comment!
 	folder destionation|branch|link to repository
-	
+
 Comments are ignored and won't be parsed by sync, much like a comment on a Shell script.
 
 As a small example, if you were to add the master branch of DynBW, it'll be like so:
 
 	# Add DynBW
 	dynbw|master|https://github.com/F4uzan/dynbw
-	
-The repository is saved in the folder defined when calling sync. It is the argument you have to supply to call sync:
 
-	sync where_to_save
-	
-Following the 'dynbw' example above, the command below will save the 'dynbw' folder to 'synced' and thus it'll be viewable in 'synced/dynbw':
+The repository is saved in the folder defined in sync.txt using "/save_to", this has to be set on the top of sync.txt for it to work:
 
-	sync synced
+	/save_to:where_to_save
+
+Following the 'dynbw' example above, if we enter "synced" in "/save_to", sync will save the 'dynbw' folder inside "synced":
+
+	/save_to:synced
+
+Our sync.txt should look somewhat like this now:
+
+	/save_to:synced
 	
+	# Add DynBW
+	dynbw|master|https://github.com/F4uzan/dynbw
+
+After finishing the sync.txt, run sync to clone all of the repository you have defined:
+
+	sync
+
 Sync is _still_ in its very early stage. It is no way a replacement for the actual repo tool and will never be. It is meant to be a dumbed-down, easy-to-approach alternative for repo and should _only_ be used alongside DynBW.
