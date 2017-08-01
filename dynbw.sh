@@ -380,6 +380,10 @@ config() {
 # --force: Force update repositories, ignoring errors
 # --help: Shows help
 sync() {
+	if ! command -v git > /dev/null 2>&1; then
+		echo "/!\ No valid Git installation found, canceling sync"
+		return
+	fi
 	arg="$1"
 	currdir="$(pwd)"
 	if [ ! -f "sync.txt" ]; then
