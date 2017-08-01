@@ -383,6 +383,10 @@ sync() {
 	arg="$1"
 	dir="$2"
 	currdir="$(pwd)"
+	if [ ! -f "sync.txt" ]; then
+		echo "/!\ Cannot find sync.txt in the current directory"
+		return
+	fi
 	input_fetch="$(cat sync.txt)"
 	case "$arg" in
 	--help|-h)
