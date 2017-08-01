@@ -408,8 +408,8 @@ sync() {
 	esac
 	local IFS=$'\n'
 	for line in $input_fetch; do
-		is_comment="$(echo "$line" | head -c1)"
-		if [ "$is_comment" = "/" ]; then
+		first_char="$(echo "$line" | head -c1)"
+		if [ "$first_char" = "/" ]; then
 			cmd="$(echo "$line" | cut -d":" -f1)"
 			arg="$(echo "$line" | cut -d":" -f2)"
 			if [ "$cmd" = "/save_to" ]; then
@@ -425,7 +425,7 @@ sync() {
 			else
 				echo "/!\ $cmd: command not found"
 			fi
-		elif [ "$is_comment" != "#" ]; then
+		elif [ "$first_char" != "#" ]; then
 			dest="$(echo "$line" | cut -d"|" -f1)"
 			branch="$(echo "$line" | cut -d"|" -f2)"
 			link="$(echo "$line" | cut -d"|" -f3)"
