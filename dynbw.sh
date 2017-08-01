@@ -410,7 +410,7 @@ sync() {
 		use_force=true
 		;;
 	esac
-	local IFS=$'\n'
+	IFS="$(printf '%b_' '\n')"; IFS="${IFS%_}"
 	for line in $input_fetch; do
 		first_char="$(echo "$line" | head -c1)"
 		if [ "$first_char" = "/" ]; then
