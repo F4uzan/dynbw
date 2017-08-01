@@ -33,7 +33,7 @@ import_var() {
 	ccache_init)
 		# Try and find ccache
 		# If ccache exists, prompts the user
-		if command -v ccache 2>/dev/null; then
+		if command -v ccache > /dev/null 2>&1; then
 			echo "/i\ Valid ccache installation found"
 			hasccache=true
 		else
