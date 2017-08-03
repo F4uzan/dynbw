@@ -415,19 +415,15 @@ sync() {
 		if [ "$first_char" = "/" ]; then
 			cmd="$(echo "$line" | cut -d":" -f1)"
 			arg="$(echo "$line" | cut -d":" -f2)"
-			if [ "$cmd" = "/save_to" ]; then
+			case $cmd in
+			/save_to|"/ save_to")
 				dir="$arg"
 				if [ ! -d "$dir" ]; then
 					mkdir -p "$dir"
 				fi
-			elif [ "$cmd" = "/ save_to" ]; then
-				dir="$arg"
-				if [ ! -d "$dir" ]; then
-					mkdir -p "$dir"
-				fi
-			else
-				echo "/!\ $cmd: command not found"
-			fi
+				;;
+			*) echo "/!\ $cmd: command not found" ;;
+			esac
 		elif [ "$first_char" != "#" ]; then
 			dest="$(echo "$line" | cut -d"|" -f1)"
 			branch="$(echo "$line" | cut -d"|" -f2)"
