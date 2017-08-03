@@ -422,6 +422,14 @@ sync() {
 					mkdir -p "$dir"
 				fi
 				;;
+			/note|"/ note")
+				text="$arg"
+				if [ "$text" = "" ]; then
+					echo "/!\ /note received no text to display"
+				else
+					printf "%s\n\n" "$text"
+				fi
+				;;
 			*) echo "/!\ $cmd: command not found" ;;
 			esac
 		elif [ "$first_char" != "#" ]; then
