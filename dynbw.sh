@@ -385,7 +385,6 @@ sync() {
 		return
 	fi
 	arg="$1"
-	currdir="$(pwd)"
 	if [ ! -f "sync.txt" ]; then
 		echo "/!\ Cannot find sync.txt in the current directory"
 		return
