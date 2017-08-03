@@ -80,10 +80,10 @@ build() {
 		echo "build <optional argument> <defconfig>"
 		echo
 		echo "Optional argument:"
-		echo "--clean: Do make clean before build"
-		echo "--mrproper: Do make mrproper before building"
-		echo "--wipe: Cleans kernel directory (mrproper) and ccache"
-		echo "--help: Display this help text"
+		echo "--clean/-c: Do make clean before build"
+		echo "--mrproper/-m: Do make mrproper before building"
+		echo "--wipe/-w: Cleans kernel directory (mrproper) and ccache"
+		echo "--help/-h: Display this help text"
 		echo
 		echo "Example:"
 		echo "build generic_arm64_defconfig"
@@ -363,9 +363,9 @@ config() {
 		echo "config <argument>"
 		echo
 		echo "Argument:"
-		echo "--init: Creates a configuration file"
-		echo "--reconfig: Modifies existing configuration file"
-		echo "--help: Shows help"
+		echo "--init/-i: Creates a configuration file"
+		echo "--reconfig/-r: Modifies existing configuration file"
+		echo "--help/-h: Shows help"
 	esac
 }
 
@@ -401,8 +401,8 @@ sync() {
 		echo "sync <argument>"
 		echo
 		echo "Argument:"
-		echo "--force: Force update repositories, ignoring errors"
-		echo "--help: Shows help"
+		echo "--force/-f: Force update repositories, ignoring errors"
+		echo "--help/-h: Shows help"
 		return
 		;;
 	--force|-f)
