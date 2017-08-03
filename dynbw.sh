@@ -5,7 +5,7 @@
 # Licensed under WTFPL, do whatever you want with it
 
 # Import the script to the current environment using:
-# "source dynbw.sh" (for BASH and other compatible Shells)
+# "source dynbw.sh" (for Bash and other compatible Shells)
 # ". dynbw.sh" (compatible with all Shells)
 
 dynbw_version="1.5"
