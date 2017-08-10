@@ -468,5 +468,14 @@ dynbw() {
 		done
 		unset IFS
 		;;
+	-h|--help|*)
+		echo "DynBW v$dynbw_version"
+		echo
+		echo "Available commands:"
+		echo "	build: Executes build process"
+		echo "	config: Creates or modify existing configuration file"
+		echo "	sync: Synces repository defined in sync.txt"
+		echo
+		echo "For help in a specific command, use 'dynbw <command> --help'"
 	esac
 }
