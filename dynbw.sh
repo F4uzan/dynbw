@@ -50,8 +50,8 @@ dynbw() {
 	arg="$2"
 	e_arg="$3"
 	
-	if [ "$cmd" = "build" ]; then
-		
+	case "$cmd" in
+	build)
 		# Builds kernel using configuration file
 		# Usage:
 		# dynbw build <argument> <defconfig>
@@ -146,10 +146,8 @@ dynbw() {
 			fi
 		fi
 		make "$defconfig" && make -j"$cores"
-		
-		
-	elif [ "$cmd" = "config" ]; then
-		
+		;;
+	config)
 		# Configuration-related function
 		# Used to create or modify configuration
 		#
@@ -377,10 +375,9 @@ dynbw() {
 			echo "--reconfig/-r: Modifies existing configuration file"
 			echo "--help/-h: Shows help"
 		esac
+		;;
 		
-		
-	elif [ "$cmd" = "sync" ]; then
-		
+	sync)
 		# A helper function for Git
 		# Acts in a similar manner to that of "repo"
 		# Fetches everything defined in sync.txt
@@ -470,5 +467,6 @@ dynbw() {
 			fi
 		done
 		unset IFS
-	fi
+		;;
+	esac
 }
