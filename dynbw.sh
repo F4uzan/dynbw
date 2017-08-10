@@ -454,14 +454,14 @@ dynbw() {
 				else
 					if [ "$(git rev-parse --resolve-git-dir "$dir/$dest/.git")" = "$dir/$dest/.git" ]; then
 						if [ "$use_force" = "true" ]; then
-							echo "/!\ $dir/$dest found. Force updating instead"
+							echo "/i\ $dir/$dest found. Force updating instead"
 							git -C "$dir/$dest" pull
 						else
-							echo "/!\ $dir/$dest found. Updating instead"
+							echo "/i\ $dir/$dest found. Updating instead"
 							git -C "$dir/$dest" pull -f
 						fi
 					else
-						echo "/!\ $dir/$dest found, but it's not a valid Git repository. Ignoring sync for $dest"
+						echo "/i\ $dir/$dest found, but it's not a valid Git repository. Ignoring sync for $dest"
 					fi
 				fi
 			fi
