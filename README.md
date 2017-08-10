@@ -22,18 +22,18 @@ Alternatively, you can use "source" if your shell supports it:
 
 After exporting, you can use DynBW's function directly in the terminal session. It is recommended for you to create an initial configuration file before building:
 
-	config -i
+	dynbw config -i
 
 To build, simply launch the build command:
 
-	build your_defconfig
+	dynbw build your_defconfig
 
 With "**your_defconfig**" being the kernel defconfig.
 
 Command help can also be accessed through their internal "--help" argument:
 
-	build --help
-	config --help
+	dynbw build --help
+	dynbw config --help
 
 Using 'sync'
 ------
@@ -74,6 +74,6 @@ Our sync.txt should look somewhat like this now:
 
 After finishing the sync.txt, run sync to clone all of the repository you have defined:
 
-	sync
+	dynbw sync
 
 Sync is _still_ in its very early stage. It is no way a replacement for the actual repo tool and will never be. It is meant to be a dumbed-down, easy-to-approach alternative for repo and should _only_ be used alongside DynBW.
