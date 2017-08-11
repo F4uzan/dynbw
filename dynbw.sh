@@ -456,7 +456,7 @@ dynbw() {
 		echo "DynBW version $dynbw_version"
 		return
 		;;
-	-h|--help|*)
+	-h|--help)
 		echo "usage: dynbw [--version] [--help] <command> [<arguments>]"
 		echo
 		echo "Available commands:"
@@ -465,5 +465,16 @@ dynbw() {
 		echo "	sync: Synces repository defined in sync.txt"
 		echo
 		echo "For help in a specific command, use 'dynbw <command> --help'"
+		;;
+	*)
+		echo "Unknown option: $cmd"
+		echo
+		echo "usage: dynbw [--version] [--help] <command> [<arguments>]"
+		echo
+		echo "Available commands:"
+		echo "	build: Executes build process"
+		echo "	config: Creates or modify existing configuration file"
+		echo "	sync: Synces repository defined in sync.txt"
+		;;
 	esac
 }
