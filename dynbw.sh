@@ -80,8 +80,6 @@ dynbw() {
 			make mrproper
 			;;
 		--help|-h|"")
-			echo "DynBW v$dynbw_version"
-			echo
 			echo "Executes build process"
 			echo
 			echo "Usage:"
@@ -363,8 +361,6 @@ dynbw() {
 			fi
 			;;
 		--help|-h|*)
-			echo "DynBW v$dynbw_version"
-			echo
 			echo "Helper function to manage configuration file"
 			echo
 			echo "Usage:"
@@ -401,8 +397,6 @@ dynbw() {
 		input_fetch="$(cat sync.txt)"
 		case "$c_arg" in
 		--help|-h)
-			echo "DynBW v$dynbw_version"
-			echo
 			echo "Synces repositories defined in sync.txt"
 			echo "Please read the supplied README before using sync"
 			echo
@@ -468,9 +462,9 @@ dynbw() {
 		done
 		unset IFS
 		;;
+	--version)
+		echo "DynBW version $dynbw_version"
 	-h|--help|*)
-		echo "DynBW v$dynbw_version"
-		echo
 		echo "Available commands:"
 		echo "	build: Executes build process"
 		echo "	config: Creates or modify existing configuration file"
