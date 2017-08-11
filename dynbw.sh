@@ -61,9 +61,6 @@ dynbw() {
 		# - mrproper: Do make mrproper before building
 		# - wipe: Cleans kernel directory (mrproper) and ccache
 		# - help: Shows help
-		#
-		# Example:
-		# dynbw build generic_arm64_defconfig
 		
 		import_var conf_init
 		import_var ccache_init
@@ -80,20 +77,15 @@ dynbw() {
 			make mrproper
 			;;
 		--help|-h|"")
+			echo "usage: dynbw build [<argument>] <defconfig>"
+			echo
 			echo "Executes build process"
 			echo
-			echo "Usage:"
-			echo "dynbw build <optional argument> <defconfig>"
-			echo
-			echo "Optional argument:"
-			echo "--clean/-c: Do make clean before build"
-			echo "--mrproper/-m: Do make mrproper before building"
-			echo "--wipe/-w: Cleans kernel directory (mrproper) and ccache"
-			echo "--help/-h: Display this help text"
-			echo
-			echo "Example:"
-			echo "dynbw build generic_arm64_defconfig"
-			echo "dynbw build clean generic_arm64_defconfig"
+			echo "Arguments:"
+			echo "	--clean/-c: Do make clean before build"
+			echo "	--mrproper/-m: Do make mrproper before building"
+			echo "	--wipe/-w: Cleans kernel directory (mrproper) and ccache"
+			echo "	--help/-h: Display this help text"
 			return
 			;;
 		*) defconfig="$1" ;;
@@ -361,15 +353,14 @@ dynbw() {
 			fi
 			;;
 		--help|-h|*)
+			echo "usage: dynbw config [<argument>]"
+			echo
 			echo "Helper function to manage configuration file"
 			echo
-			echo "Usage:"
-			echo "dynbw config <argument>"
-			echo
-			echo "Argument:"
-			echo "--init/-i: Creates a configuration file"
-			echo "--reconfig/-r: Modifies existing configuration file"
-			echo "--help/-h: Shows help"
+			echo "Arguments:"
+			echo "	--init/-i: Creates a configuration file"
+			echo "	--reconfig/-r: Modifies existing configuration file"
+			echo "	--help/-h: Display this help text"
 		esac
 		;;
 		
@@ -397,15 +388,14 @@ dynbw() {
 		input_fetch="$(cat sync.txt)"
 		case "$c_arg" in
 		--help|-h)
+			echo "usage: dynbw sync [<argument>]"
+			echo
 			echo "Synces repositories defined in sync.txt"
 			echo "Please read the supplied README before using sync"
 			echo
-			echo "Usage:"
-			echo "dynbw sync <argument>"
-			echo
-			echo "Argument:"
-			echo "--force/-f: Force update repositories, ignoring errors"
-			echo "--help/-h: Shows help"
+			echo "Arguments:"
+			echo "	--force/-f: Force update repositories, ignoring errors"
+			echo "	--help/-h: Display this help text"
 			return
 			;;
 		--force|-f)
@@ -464,7 +454,11 @@ dynbw() {
 		;;
 	--version)
 		echo "DynBW version $dynbw_version"
+		return
+		;;
 	-h|--help|*)
+		echo "usage: dynbw [--version] [--help] <command> [<arguments>]"
+		echo
 		echo "Available commands:"
 		echo "	build: Executes build process"
 		echo "	config: Creates or modify existing configuration file"
