@@ -1,6 +1,6 @@
 #!/bin/sh
 # Dynamic Build Wrapper for Android-compatible kernel source (DynBW)
-# Version 1.5-PREALPHA
+# Version 1.6.1108
 # Handmade by F4, with parts picked from the internet
 # Licensed under WTFPL, do whatever you want with it
 
@@ -8,7 +8,7 @@
 # "source dynbw.sh" (for Bash and other compatible Shells)
 # ". dynbw.sh" (compatible with all Shells)
 
-dynbw_version="1.5-PREALPHA"
+dynbw_version="1.6.1108"
 
 # Internal function: Imports variable
 import_var() {
