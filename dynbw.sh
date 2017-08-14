@@ -191,15 +191,16 @@ dynbw() {
 			esac
 			fi
 			echo
-			echo "Example toolchain path: /home/user/toolchain/bin/aarch64-linux-android-"
-			echo "Do not forget to include the hyphen at the end of the path!"
+			echo "Example toolchain path: /home/user/aarch64-eabi-4.9"
 			printf "Toolchain path: "
-			read -r toolchain
-			if [ "$toolchain" = "" ]; then
+			read -r input_toolchain
+			if [ "$input_toolchain" = "" ]; then
 				echo "/!\ Empty input, exiting..."
 				rm "$temp_conf_file"
 				return
 			fi
+			find_gcc="$(ls $input_toolchain/bin/ | grep -m 1 "\-gcc" | sed "s/gcc//g")"
+			toolchain="$input_toolchain/bin/$find_gcc"
 			toolchain_arm="$(echo "$toolchain" | grep -c "arm" | sed -e '1{q;}')"
 			toolchain_arm64="$(echo "$toolchain" | grep -c "aarch64" | sed -e '1{q;}')"
 			toolchain_i686="$(echo "$toolchain" | grep -c "i686" | sed -e '1{q;}')"
@@ -352,10 +353,13 @@ dynbw() {
 					v_toolchain="$toolchain_x86_64"
 				fi
 				echo
+				echo "Example toolchain path: /home/user/aarch64-eabi-4.9"
 				printf "New toolchain path: "
 				read -r re_toolchain
-				sed -i -e "s#$c_toolchain=$v_toolchain#$c_toolchain=$re_toolchain#g" "$conf_file"
-				echo "/i\ Toolchain path changed to $re_toolchain"
+				find_gcc="$(ls $re_toolchain/bin/ | grep -m 1 "\-gcc" | sed "s/gcc//g")"
+				g_toolchain="$re_toolchain/bin/$find_gcc"
+				sed -i -e "s#$c_toolchain=$v_toolchain#$c_toolchain=$g_toolchain#g" "$conf_file"
+				echo "/i\ Toolchain path changed to $g_toolchain"
 				return
 			elif [ "$c_re" -gt "5" ]; then
 				echo "/!\ $c_re: Input out of range"
