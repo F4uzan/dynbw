@@ -422,7 +422,7 @@ dynbw() {
 				arg="$(echo "$line" | cut -d":" -f2)"
 				case $cmd in
 				/save_to|"/ save_to")
-					dir="$(echo $arg | xargs)"
+					dir="$(echo "$arg" | xargs)"
 					if [ ! -d "$dir" ]; then
 						mkdir -p "$dir"
 					fi
