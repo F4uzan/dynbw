@@ -62,15 +62,21 @@ dynbw() {
 		# - wipe: Cleans kernel directory (mrproper) and ccache
 		# - help: Shows help
 		
-		import_var conf_init
-		import_var ccache_init
 		flag="$arg"
 		defconfig="$e_arg"
 
 		case "$flag" in
-		--clean|-c) make clean ;;
-		--mrproper|-m) make mrproper ;;
+		--clean|-c)
+			import_var conf_init
+			import_var ccache_init
+			make clean ;;
+		--mrproper|-m)
+			import_var conf_init
+			import_var ccache_init
+			make mrproper ;;
 		--wipe|-w)
+			import_var conf_init
+			import_var ccache_init
 			if [ "$hasccache" = "true" ]; then
 				ccache -c
 			fi
@@ -90,6 +96,9 @@ dynbw() {
 			;;
 		*) defconfig="$1" ;;
 		esac
+		
+		import_var conf_init
+		import_var ccache_init
 
 		if [ -f "arch/arm/configs/$defconfig" ]; then
 			export ARCH=arm
