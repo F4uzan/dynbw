@@ -88,10 +88,10 @@ dynbw() {
 			echo "Executes build process"
 			echo
 			echo "Arguments:"
-			echo "	--clean/-c: Do make clean before build"
-			echo "	--mrproper/-m: Do make mrproper before building"
-			echo "	--wipe/-w: Cleans kernel directory (mrproper) and ccache"
-			echo "	--help/-h: Display this help text"
+			echo "	--clean/-c		: Do make clean before build"
+			echo "	--mrproper/-m		: Do make mrproper before building"
+			echo "	--wipe/-w		: Cleans kernel directory (mrproper) and ccache"
+			echo "	--help/-h		: Display this help text"
 			return
 			;;
 		*) defconfig="$1" ;;
@@ -367,9 +367,9 @@ dynbw() {
 			echo "Helper function to manage configuration file"
 			echo
 			echo "Arguments:"
-			echo "	--init/-i: Creates a configuration file"
-			echo "	--reconfig/-r: Modifies existing configuration file"
-			echo "	--help/-h: Display this help text"
+			echo "	--init/-i		: Creates a configuration file"
+			echo "	--reconfig/-r		: Modifies existing configuration file"
+			echo "	--help/-h		: Display this help text"
 		esac
 		;;
 		
@@ -403,8 +403,8 @@ dynbw() {
 			echo "Please read the supplied README before using sync"
 			echo
 			echo "Arguments:"
-			echo "	--force/-f: Force update repositories, ignoring errors"
-			echo "	--help/-h: Display this help text"
+			echo "	--force/-f	: Force update repositories, ignoring errors"
+			echo "	--help/-h	: Display this help text"
 			return
 			;;
 		--force|-f)
