@@ -167,6 +167,9 @@ dynbw() {
 				echo "/!\ Existing configuration file found, exiting..."
 				return
 			fi
+			if [ -f "$temp_conf_file" ]; then
+				rm "$temp_conf_file"
+			fi
 			echo "Initialising configuration..."
 			touch "$temp_conf_file"
 			printf "Automatically detect CPU cores count for build system [Y/n]? "
