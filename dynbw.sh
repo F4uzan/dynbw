@@ -460,9 +460,9 @@ dynbw() {
 		echo "usage: dynbw [--version] [--help] <command> [<arguments>]"
 		echo
 		echo "Available commands:"
-		echo "	build: Executes build process"
-		echo "	config: Creates or modify existing configuration file"
-		echo "	sync: Synces repository defined in sync.txt"
+		echo "	build	: Executes build process"
+		echo "	config	: Creates or modify existing configuration file"
+		echo "	sync	: Synces repository defined in sync.txt"
 		echo
 		echo "For help in a specific command, use 'dynbw <command> --help'"
 		;;
@@ -472,9 +472,9 @@ dynbw() {
 		echo "usage: dynbw [--version] [--help] <command> [<arguments>]"
 		echo
 		echo "Available commands:"
-		echo "	build: Executes build process"
-		echo "	config: Creates or modify existing configuration file"
-		echo "	sync: Synces repository defined in sync.txt"
+		echo "	build	: Executes build process"
+		echo "	config	: Creates or modify existing configuration file"
+		echo "	sync	: Synces repository defined in sync.txt"
 		;;
 	esac
 }
