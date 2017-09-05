@@ -13,6 +13,7 @@ dynbw_version="1.6.1408"
 # Internal function: Imports variable
 import_var() {
 	arg="$1"
+	extra_arg="$2"
 	conf_file=".dynbw_config"
 
 	case "$arg" in
@@ -26,8 +27,10 @@ import_var() {
 			toolchain_i686="$(grep "toolchain_i686=" "$conf_file" | cut -d"=" -f2 | sed -e '1{q;}')"
 			toolchain_x86_64="$(grep "toolchain_x86_64=" "$conf_file" | cut -d"=" -f2 | sed -e '1{q;}')"
 		else
-			echo "[i] Configuration file not found"
-			echo "Run 'config init' to create configuration file"
+			if [ ! "$extra_arg" = "--mkconfig" ]; then
+				echo "[i] Configuration file not found"
+				echo "Run 'config init' to create configuration file"
+			fi
 		fi
 	;;
 	ccache_init)
@@ -161,7 +164,7 @@ dynbw() {
 		c_arg="$arg"
 		case "$c_arg" in
 		--init|-i)
-			import_var conf_init
+			import_var conf_init --mkconfig
 			temp_conf_file=".dynbw_config_temp"
 			if [ -f "$conf_file" ]; then
 				echo "/!\ Existing configuration file found, exiting..."
