@@ -374,7 +374,15 @@ dynbw() {
 				echo "Example toolchain path: /home/user/aarch64-eabi-4.9"
 				printf "New toolchain path: "
 				read -r re_toolchain
+				if [ ! -d "$re_toolchain" ]; then
+					echo "/!\ Defined path not found or is not a directory"
+					return
+				fi
 				find_gcc="$(ls $re_toolchain/bin/ | grep -m 1 "\-gcc" | sed "s/gcc//g")"
+				if [ "$find_gcc" = "" ]; then
+					echo "/!\ Unable to find toolchain in defined path"
+					return
+				fi
 				g_toolchain="$re_toolchain/bin/$find_gcc"
 				sed -i -e "s#$c_toolchain=$v_toolchain#$c_toolchain=$g_toolchain#g" "$conf_file"
 				echo "[i] Toolchain path changed to $g_toolchain"
