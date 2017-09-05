@@ -28,8 +28,9 @@ import_var() {
 			toolchain_x86_64="$(grep "toolchain_x86_64=" "$conf_file" | cut -d"=" -f2 | sed -e '1{q;}')"
 		else
 			if [ ! "$extra_arg" = "--mkconfig" ]; then
-				echo "[i] Configuration file not found"
+				echo "/!\ Configuration file not found"
 				echo "Run 'config init' to create configuration file"
+				return
 			fi
 		fi
 	;;
