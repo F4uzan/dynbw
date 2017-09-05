@@ -26,7 +26,7 @@ import_var() {
 			toolchain_i686="$(grep "toolchain_i686=" "$conf_file" | cut -d"=" -f2 | sed -e '1{q;}')"
 			toolchain_x86_64="$(grep "toolchain_x86_64=" "$conf_file" | cut -d"=" -f2 | sed -e '1{q;}')"
 		else
-			echo "/i\ Configuration file not found"
+			echo "[i] Configuration file not found"
 			echo "Run 'config init' to create configuration file"
 		fi
 	;;
@@ -34,10 +34,10 @@ import_var() {
 		# Try and find ccache
 		# If ccache exists, prompts the user
 		if command -v ccache > /dev/null 2>&1; then
-			echo "/i\ Valid ccache installation found"
+			echo "[i] Valid ccache installation found"
 			hasccache=true
 		else
-			echo "/i\ No valid ccache installation found"
+			echo "[i] No valid ccache installation found"
 			hasccache=false
 		fi
 	;;
@@ -336,7 +336,7 @@ dynbw() {
 				printf "Change cores count to [auto][0-99]: "
 				read -r re_cores
 				sed -i -e "s/cores=$cores/cores=$re_cores/g" "$conf_file"
-				echo "/i\ Cores count changed to $re_cores"
+				echo "[i] Cores count changed to $re_cores"
 				return
 			elif [ "$c_re" -gt "1" ]; then
 				if [ "$c_re" = "2" ]; then
@@ -359,7 +359,7 @@ dynbw() {
 				find_gcc="$(ls $re_toolchain/bin/ | grep -m 1 "\-gcc" | sed "s/gcc//g")"
 				g_toolchain="$re_toolchain/bin/$find_gcc"
 				sed -i -e "s#$c_toolchain=$v_toolchain#$c_toolchain=$g_toolchain#g" "$conf_file"
-				echo "/i\ Toolchain path changed to $g_toolchain"
+				echo "[i] Toolchain path changed to $g_toolchain"
 				return
 			elif [ "$c_re" -gt "5" ]; then
 				echo "/!\ $c_re: Input out of range"
@@ -454,14 +454,14 @@ dynbw() {
 				else
 					if [ "$(git rev-parse --resolve-git-dir "$dir/$dest/.git")" = "$dir/$dest/.git" ]; then
 						if [ "$use_force" = "true" ]; then
-							echo "/i\ $dir/$dest found. Force updating instead"
+							echo "[i] $dir/$dest found. Force updating instead"
 							git -C "$dir/$dest" pull
 						else
-							echo "/i\ $dir/$dest found. Updating instead"
+							echo "[i] $dir/$dest found. Updating instead"
 							git -C "$dir/$dest" pull -f
 						fi
 					else
-						echo "/i\ $dir/$dest found, but it's not a valid Git repository. Ignoring sync for $dest"
+						echo "[i] $dir/$dest found, but it's not a valid Git repository. Ignoring sync for $dest"
 					fi
 				fi
 			fi
