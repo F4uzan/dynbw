@@ -384,6 +384,7 @@ dynbw() {
 				return
 			else
 				echo "/!\ $c_re: Invalid input"
+				return
 			fi
 			;;
 		--help|-h|*)
