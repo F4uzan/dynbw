@@ -48,7 +48,7 @@ The sync.txt is parsed using this format:
 Sync also accepts commenting on lines using Shell style comments (pound/hash):
 
 	# This is a comment!
-	folder destionation|branch|link to repository
+	folder destination|branch|link to repository
 
 Comments are ignored and won't be parsed by sync, much like a comment on a Shell script.
 
