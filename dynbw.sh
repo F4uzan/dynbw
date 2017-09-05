@@ -114,31 +114,37 @@ dynbw() {
 			echo "/!\ $defconfig: Defconfig not found, exiting.."
 			return
 		fi
-		if [ "$ARCH" = "arm" ]; then
+		
+		case "$ARCH" in
+		arm)
 			if [ "$toolchain_arm" = "" ]; then
 				echo "/!\ Unable to find toolchain for ARM, exiting.."
 				return
 			fi
 			export CROSS_COMPILE="$toolchain_arm"
-		elif [ "$ARCH" = "arm64" ]; then
+			;;
+		arm64)
 			if [ "$toolchain_arm64" = "" ]; then
 				echo "/!\ Unable to find toolchain for ARM64, exiting.."
 				return
 			fi
 			export CROSS_COMPILE="$toolchain_arm64"
-		elif [ "$ARCH" = "i686" ]; then
+			;;
+		i686)
 			if [ "$toolchain_i686" = "" ]; then
 				echo "/!\ Unable to find toolchain for Intel 32-bit, exiting.."
 				return
 			fi
 			export CROSS_COMPILE="$toolchain_i686"
-		elif [ "$ARCH" = "x86_64" ]; then
+			;;
+		x86_64)
 			if [ "$toolchain_x86_64" = "" ]; then
 				echo "/!\ Unable to find toolchain for Intel 64-bit, exiting.."
 				return
 			fi
 			export CROSS_COMPILE="$toolchain_x86_64"
-		fi
+			;;
+		esac
 		if [ "$cores" = "auto" ]; then
 			if [ "$(uname -s)" = "Darwin" ]; then
 				cores="$(sysctl -n hw.ncpu)"
