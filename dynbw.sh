@@ -484,13 +484,6 @@ dynbw() {
 		;;
 	*)
 		echo "Unknown option: $cmd"
-		echo
-		echo "usage: dynbw [--version] [--help] <command> [<arguments>]"
-		echo
-		echo "Available commands:"
-		echo "	build	: Executes build process"
-		echo "	config	: Creates or modify existing configuration file"
-		echo "	sync	: Synces repository defined in sync.txt"
 		;;
 	esac
 }
