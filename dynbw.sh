@@ -209,7 +209,15 @@ dynbw() {
 				rm "$temp_conf_file"
 				return
 			fi
+			if [ ! -d "$input_toolchain" ]; then
+				echo "/!\ Defined path not found or is not a directory"
+				return
+			fi
 			find_gcc="$(ls $input_toolchain/bin/ | grep -m 1 "\-gcc" | sed "s/gcc//g")"
+			if [ "$find_gcc" = "" ]; then
+				echo "/!\ Unable to find toolchain in defined path"
+				return
+			fi
 			toolchain="$input_toolchain/bin/$find_gcc"
 			toolchain_arm="$(echo "$toolchain" | grep -c "arm" | sed -e '1{q;}')"
 			toolchain_arm64="$(echo "$toolchain" | grep -c "aarch64" | sed -e '1{q;}')"
