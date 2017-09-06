@@ -463,7 +463,7 @@ dynbw() {
 					if [ "$text" = "" ]; then
 						echo "/!\ /note received no text to display"
 					else
-						printf "%s\n\n" "$text"
+						printf "%s" "$text"
 					fi
 					;;
 				*) echo "/!\ $cmd: command not found" ;;
