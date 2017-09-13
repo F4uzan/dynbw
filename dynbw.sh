@@ -448,7 +448,7 @@ dynbw() {
 		sed '/^[ \t]*$/d' sync.txt | while read -r line; do
 			first_char="$(echo "$line" | head -c1)"
 			if [ "$first_char" = "/" ]; then
-				cmd="$(echo "$line" | cut -d":" -f1)"
+				com="$(echo "$line" | cut -d":" -f1)"
 				arg="$(echo "$line" | cut -d":" -f2)"
 				case $cmd in
 				/save_to|"/ save_to")
@@ -462,10 +462,10 @@ dynbw() {
 					if [ "$text" = "" ]; then
 						echo "/!\ /note received no text to display"
 					else
-						printf "%s" "$text"
+						echo "$text"
 					fi
 					;;
-				*) echo "/!\ $cmd: command not found" ;;
+				*) echo "/!\ $com: command not found" ;;
 				esac
 			elif [ "$first_char" != "#" ]; then
 				dest="$(echo "$line" | cut -d"|" -f1)"
