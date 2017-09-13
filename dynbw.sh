@@ -508,6 +508,9 @@ dynbw() {
 		echo
 		echo "For help in a specific command, use 'dynbw <command> --help'"
 		;;
+	"") 
+		echo "Received empty or no command. Use '--help' for the list of available commands"
+		;;
 	*)
 		echo "Unknown option: $cmd"
 		;;
