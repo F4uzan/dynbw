@@ -428,7 +428,6 @@ dynbw() {
 			echo "/!\ Cannot find sync.txt in the current directory"
 			return
 		fi
-		input_fetch="$(cat sync.txt)"
 		case "$c_arg" in
 		--help|-h)
 			echo "usage: dynbw sync [<argument>]"
@@ -446,7 +445,7 @@ dynbw() {
 			;;
 		esac
 		IFS="$(printf '%b_' '\n')"; IFS="${IFS%_}"
-		for line in $input_fetch; do
+		sed '/^[ \t]*$/d' sync.txt | while read -r line; do
 			first_char="$(echo "$line" | head -c1)"
 			if [ "$first_char" = "/" ]; then
 				cmd="$(echo "$line" | cut -d":" -f1)"
