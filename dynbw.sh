@@ -450,7 +450,7 @@ dynbw() {
 			if [ "$first_char" = "/" ]; then
 				com="$(echo "$line" | cut -d":" -f1)"
 				arg="$(echo "$line" | cut -d":" -f2)"
-				case $cmd in
+				case $com in
 				/save_to|"/ save_to")
 					dir="$(echo "$arg" | xargs)"
 					if [ ! -d "$dir" ]; then
