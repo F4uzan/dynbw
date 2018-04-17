@@ -98,7 +98,10 @@ dynbw() {
 			echo "	--help/-h		: Display this help text"
 			return
 			;;
-		*) defconfig="$1" ;;
+		*)
+			shift
+			defconfig="$1"
+			;;
 		esac
 		
 		import_var conf_init
@@ -106,10 +109,13 @@ dynbw() {
 
 		if [ -f "arch/arm/configs/$defconfig" ]; then
 			export ARCH=arm
+			export SUBARCH=arm
 		elif [ -f "arch/arm64/configs/$defconfig" ]; then
 			export ARCH=arm64
+			export SUBARCH=arm64
 		elif [ -f "arch/x86/configs/$defconfig" ]; then
 			export ARCH=x86
+			export SUBARCH=x86
 		else
 			echo "/!\ $defconfig: Defconfig not found, exiting.."
 			return
