@@ -1,14 +1,14 @@
 #!/bin/sh
 # Dynamic Build Wrapper for Android-compatible kernel source (DynBW)
-# Version 1.6.1704
-# Handmade by F4, with parts picked from the internet
-# Licensed under WTFPL, do whatever you want with it
+# Version 1.6.0706
+# Handmade by F4, with parts picked from the internet.
+# Licensed under WTFPL, do whatever you want with it.
 
 # Import the script to the current environment using:
 # "source dynbw.sh" (for Bash and other compatible Shells)
-# ". dynbw.sh" (compatible with all Shells)
+# ". dynbw.sh" (generally compatible with all Shells)
 
-dynbw_version="1.6.1704"
+dynbw_version="1.6.0706"
 
 # Internal function: Imports variable
 import_var() {
@@ -24,8 +24,8 @@ import_var() {
 			cores="$(grep "cores=" "$conf_file" | cut -d"=" -f2 | sed -e '1{q;}')"
 			toolchain_arm="$(grep "toolchain_arm=" "$conf_file" | cut -d"=" -f2 | sed -e '1{q;}')"
 			toolchain_arm64="$(grep "toolchain_arm64=" "$conf_file" | cut -d"=" -f2 | sed -e '1{q;}')"
-			toolchain_i686="$(grep "toolchain_i686=" "$conf_file" | cut -d"=" -f2 | sed -e '1{q;}')"
-			toolchain_x86_64="$(grep "toolchain_x86_64=" "$conf_file" | cut -d"=" -f2 | sed -e '1{q;}')"
+			toolchain_ia32="$(grep "toolchain_ia32=" "$conf_file" | cut -d"=" -f2 | sed -e '1{q;}')"
+			toolchain_ia64="$(grep "toolchain_ia64=" "$conf_file" | cut -d"=" -f2 | sed -e '1{q;}')"
 		else
 			if [ ! "$extra_arg" = "--mkconfig" ]; then
 				echo "/!\ Configuration file not found"
@@ -117,7 +117,7 @@ dynbw() {
 			export ARCH=x86
 			export SUBARCH=x86
 		else
-			echo "/!\ $defconfig: Defconfig not found, exiting.."
+			echo "/!\ $defconfig not found, exiting.."
 			return
 		fi
 		
@@ -136,19 +136,20 @@ dynbw() {
 			fi
 			export CROSS_COMPILE="$toolchain_arm64"
 			;;
-		i686)
-			if [ "$toolchain_i686" = "" ]; then
-				echo "/!\ Unable to find toolchain for Intel 32-bit, exiting.."
-				return
-			fi
-			export CROSS_COMPILE="$toolchain_i686"
-			;;
-		x86_64)
-			if [ "$toolchain_x86_64" = "" ]; then
+		#TODO: Detection for Intel is broken. Temporarily disabling the 32-bit for now.
+		#i686)
+		#	if [ "$toolchain_ia32" = "" ]; then
+		#		echo "/!\ Unable to find toolchain for Intel 32-bit, exiting.."
+		#		return
+		#	fi
+		#	export CROSS_COMPILE="$toolchain_ia32"
+		#	;;
+		x86)
+			if [ "$toolchain_ia64" = "" ]; then
 				echo "/!\ Unable to find toolchain for Intel 64-bit, exiting.."
 				return
 			fi
-			export CROSS_COMPILE="$toolchain_x86_64"
+			export CROSS_COMPILE="$toolchain_ia64"
 			;;
 		esac
 		if [ "$cores" = "auto" ]; then
@@ -227,28 +228,28 @@ dynbw() {
 			toolchain="$input_toolchain/bin/$find_gcc"
 			toolchain_arm="$(echo "$toolchain" | grep -c "arm" | sed -e '1{q;}')"
 			toolchain_arm64="$(echo "$toolchain" | grep -c "aarch64" | sed -e '1{q;}')"
-			toolchain_i686="$(echo "$toolchain" | grep -c "i686" | sed -e '1{q;}')"
-			toolchain_x86_64="$(echo "$toolchain" | grep -c "x86_64" | sed -e '1{q;}')"
+			toolchain_ia32="$(echo "$toolchain" | grep -c "i686" | sed -e '1{q;}')"
+			toolchain_ia64="$(echo "$toolchain" | grep -c "x86_64" | sed -e '1{q;}')"
 			no_arch=0
 			if [ "$toolchain_arm" -gt 0 ]; then
-				echo "/i\ ARM-compatible toolchain detected"
+				echo "[i] ARM-compatible toolchain detected"
 				toolchain_arch=arm
-				toolchain_exclude="arm64, i686, x86_64"
+				toolchain_exclude="arm64, ia32, ia64"
 			elif [ "$toolchain_arm64" -gt 0 ]; then
-				echo "/i\ ARM64-compatible toolchain detected"
+				echo "[i] ARM64-compatible toolchain detected"
 				toolchain_arch=arm64
-				toolchain_exclude="arm, i686, x86_64"
-			elif [ "$toolchain_i686" -gt 0 ]; then
-				echo "/i\ Intel 32-bit toolchain detected"
-				toolchain_arch=i686
-				toolchain_exclude="arm, arm64, x86_64"
-			elif [ "$toolchain_x86_64" -gt 0 ]; then
-				echo "/i\ Intel 64-bit toolchain detected"
-				toolchain_arch=x86_64
-				toolchain_exclude="arm, arm64, i686"
+				toolchain_exclude="arm, ia32, ia64"
+			elif [ "$toolchain_ia32" -gt 0 ]; then
+				echo "[i] Intel 32-bit toolchain detected"
+				toolchain_arch=ia32
+				toolchain_exclude="arm, arm64, ia64"
+			elif [ "$toolchain_ia64" -gt 0 ]; then
+				echo "[i] Intel 64-bit toolchain detected"
+				toolchain_arch=ia64
+				toolchain_exclude="arm, arm64, ia32"
 			else
 				echo "/!\ Unable to automatically detect toolchain architecture"
-				echo "/i\ Please manually enter the architecture"
+				echo "[i] Please manually enter the architecture"
 				no_arch=1
 			fi
 			if [ "$no_arch" = "0" ]; then
@@ -280,29 +281,29 @@ dynbw() {
 					{
 						echo "toolchain_arm=$toolchain"
 						echo "toolchain_arm64="
-						echo "toolchain_i686="
-						echo "toolchain_x86_64="
+						echo "toolchain_ia32="
+						echo "toolchain_ia64="
 					} >> "$temp_conf_file"
 				elif [ "$manual_arch" = "2" ]; then
 					{
 						echo "toolchain_arm64=$toolchain"
 						echo "toolchain_arm="
-						echo "toolchain_i686="
-						echo "toolchain_x86_64="
+						echo "toolchain_ia32="
+						echo "toolchain_ia64="
 					} >> "$temp_conf_file"
 				elif [ "$manual_arch" = "3" ]; then
 					{
-						echo "tooclhain_i686=$toolchain"
+						echo "tooclhain_ia32=$toolchain"
 						echo "toolchain_arm="
 						echo "toolchain_arm64="
-						echo "toolchain_x86_64="
+						echo "toolchain_ia64="
 					} >> "$temp_conf_file"
 				elif [ "$manual_arch" = "4" ]; then
 					{
-						echo "toolchain_x86_64=$toolchain"
+						echo "toolchain_ia64=$toolchain"
 						echo "toolchain_arm="
 						echo "toolchain_arm64="
-						echo "toolchain_i686="
+						echo "toolchain_ia32="
 					} >> "$temp_conf_file"
 				else
 					echo "/!\ Invalid input, exiting..."
@@ -310,7 +311,7 @@ dynbw() {
 					return
 				fi
 			fi
-			echo
+			echo 
 			mv "$temp_conf_file" "$conf_file"
 			echo "Configuration done!"
 			;;
@@ -335,23 +336,23 @@ dynbw() {
 			else
 				arm64_path="$toolchain_arm64"
 			fi
-			if [ "$toolchain_i686" = "" ]; then
-				i686_path="Empty"
+			if [ "$toolchain_ia32" = "" ]; then
+				ia32_path="Empty"
 			else
-				i686_path="$toolchain_i686"
+				ia32_path="$toolchain_ia32"
 			fi
-			if [ "$toolchain_x86_64" = "" ]; then
-				x86_64_path="Empty"
+			if [ "$toolchain_ia64" = "" ]; then
+				ia64_path="Empty"
 			else
-				x86_64_path="$toolchain_x86_64"
+				ia64_path="$toolchain_ia64"
 			fi
 			echo "List of available configuration"
 			echo
 			echo "1.) Cores count        : $cores_display"
 			echo "2.) ARM Toolchain      : $arm_path"
 			echo "3.) ARM64 Toolchain    : $arm64_path"
-			echo "4.) Intel-32 Toolchain : $i686_path"
-			echo "5.) Intel-64 Toolchain : $x86_64_path"
+			echo "4.) Intel-32 Toolchain : $ia32_path"
+			echo "5.) Intel-64 Toolchain : $ia64_path"
 			echo
 			printf "Configuration to modify [1-5]: "
 			read -r c_re
@@ -370,11 +371,11 @@ dynbw() {
 					c_toolchain="toolchain_arm64"
 					v_toolchain="$toolchain_arm64"
 				elif [ "$c_re" = "4" ]; then
-					c_toolchain="toolchain_i686"
-					v_toolchain="$toolchain_i686"
+					c_toolchain="toolchain_ia32"
+					v_toolchain="$toolchain_ia32"
 				elif [ "$c_re" = "5" ]; then
-					c_toolchain="toolchain_x86_64"
-					v_toolchain="$toolchain_x86_64"
+					c_toolchain="toolchain_ia64"
+					v_toolchain="$toolchain_ia64"
 				fi
 				echo
 				echo "Example toolchain path: /home/user/aarch64-eabi-4.9"
